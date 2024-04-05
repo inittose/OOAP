@@ -5,8 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contacts"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Contacts" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="43"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Edit Contact" Margin="15,15,3,3" RenderTransformOrigin="0.5,0.5">
+            <GroupBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </GroupBox.RenderTransform>
+            <Grid>
+                <Label Content="Name:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 0, 0, 0"/>
+                <TextBox VerticalAlignment="Top" Margin="5,28,5,0"/>
+                <Label Content="Phone Number:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 51, 0, 0"/>
+                <TextBox VerticalAlignment="Top" Margin="5,79,5,0"/>
+                <Label Content="Email:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 102, 0, 0"/>
+                <TextBox VerticalAlignment="Top" Margin="5,130,5,0"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="0" Header="Read Contact" Margin="3,15,15,3" RenderTransformOrigin="0.5,0.5">
+            <GroupBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </GroupBox.RenderTransform>
+            <Grid>
+                <Label Content="Name:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 0, 0, 0"/>
+                <Label VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 28, 0, 0"/>
+                <Label Content="Phone Number:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 51, 0, 0"/>
+                <Label VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 79, 0, 0"/>
+                <Label Content="Email:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 102, 0, 0"/>
+                <Label VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0, 130, 0, 0"/>
+            </Grid>
+        </GroupBox>
+        <Button Grid.Column="1" Grid.Row="1" Content="Save" HorizontalAlignment="Right" Margin="0,3,96,15" Height="25" Width="75"/>
+        <Button Grid.Column="1" Grid.Row="1" Content="Load" HorizontalAlignment="Right" Margin="0,3,15,15" Height="25" Width="75"/>
 
     </Grid>
 </Window>
