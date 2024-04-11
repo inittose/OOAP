@@ -6,47 +6,23 @@
     public class Contact
     {
         /// <summary>
-        /// Имя контакта.
-        /// </summary>
-        private string _name;
-
-        /// <summary>
-        /// Номер телефона.
-        /// </summary>
-        private string _phoneNumber;
-
-        /// <summary>
-        /// Электронная почта.
-        /// </summary>
-        private string _email;
-
-        /// <summary>
         /// Возвращает и задает имя контакта.
         /// </summary>
-        public string Name
-        {
-            get => _name;
-            set => _name = value;
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Возвращает и задает номер телефона.
         /// </summary>
-        public string PhoneNumber
-        {
-            get => _phoneNumber;
-            set => _phoneNumber = value;
-        }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// Возвращает и задает электронную почту.
         /// </summary>
-        public string Email
-        {
-            get => _email;
-            set => _email = value;
-        }
+        public string Email { get; set; }
 
+        /// <summary>
+        /// Созадет экзепляр класса <see cref="Contact"/>.
+        /// </summary>
         public Contact()
         {
             Name = string.Empty;
@@ -54,6 +30,12 @@
             Email = string.Empty;
         }
 
+        /// <summary>
+        /// Созадет экзепляр класса <see cref="Contact"/>.
+        /// </summary>
+        /// <param name="name">Имя контакта.</param>
+        /// <param name="phoneNumber">Номер телефона.</param>
+        /// <param name="email">Электронная почта.</param>
         public Contact(string name, string phoneNumber, string email)
         {
             Name = name;
