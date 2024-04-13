@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using View.Model;
@@ -78,7 +79,7 @@ namespace View.ViewModel
         /// Загружает данные о контакте.
         /// </summary>
         /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
-        private void LoadContact(object obj)
+        private void LoadContact()
         {
             Contact = ContactSerializer.GetContact();
         }
@@ -87,7 +88,7 @@ namespace View.ViewModel
         /// Сохраняет данные о контакте.
         /// </summary>
         /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
-        private void SaveContact(object obj)
+        private void SaveContact()
         {
             ContactSerializer.SetContact(Contact);
         }
