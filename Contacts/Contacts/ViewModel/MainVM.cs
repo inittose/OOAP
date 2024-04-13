@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using View.Model;
 using View.Model.Services;
 
@@ -11,108 +12,55 @@ namespace View.ViewModel
     public class MainVM : INotifyPropertyChanged
     {
         /// <summary>
-        /// Команда загрузки данных.
+        /// Контакт.
         /// </summary>
-        private RelayCommand _loadCommand;
+        public Contact _contact;
 
         /// <summary>
-        /// Команда сохранения данных.
+        /// Возвращает и задает контакт.
         /// </summary>
-        private RelayCommand _saveCommand;
-
-        /// <summary>
-        /// Имя контакта.
-        /// </summary>
-        private string _name;
-
-        /// <summary>
-        /// Электронная почта контакта.
-        /// </summary>
-        private string _email;
-
-        /// <summary>
-        /// Номер телефона контакта.
-        /// </summary>
-        private string _phoneNumber;
-
-        /// <summary>
-        /// Возвращает и задает имя контакта.
-        /// </summary>
-        public string Name
+        public Contact Contact
         {
-            get => _name;
+            get => _contact;
             set
             {
-                _name = value;
-                OnPropertyChanged("Name");
-            }
-        }
+                if (_contact != value)
+                {
+                    _contact = value;
+                    OnPropertyChanged(nameof(Contact));
 
-        /// <summary>
-        /// Возвращает и задает номер телефона контакта.
-        /// </summary>
-        public string PhoneNumber
-        {
-            get => _phoneNumber;
-            set
-            {
-                _phoneNumber = value;
-                OnPropertyChanged("PhoneNumber");
-            }
-        }
-
-        /// <summary>
-        /// Возвращает и задает электронную почту контакта.
-        /// </summary>
-        public string Email
-        {
-            get => _email;
-            set
-            {
-                _email = value;
-                OnPropertyChanged("Email");
+                    foreach(var prop in typeof(Contact).GetProperties())
+                    {
+                        OnPropertyChanged(prop.Name);
+                    }
+                }
             }
         }
 
         /// <summary>
         /// Возвращает команду загрузки данных.
         /// </summary>
-        public RelayCommand LoadCommand
-        {
-            get
-            {
-                return _loadCommand ?? (_loadCommand = new RelayCommand(obj =>
-                {
-                    var contact = ContactSerializer.GetContact();
-
-                    if (contact == null)
-                    {
-                        return;
-                    }
-
-                    Name = contact.Name;
-                    PhoneNumber = contact.PhoneNumber;
-                    Email = contact.Email;
-                }));
-            }
-        }
+        public ICommand LoadCommand { get; }
 
         /// <summary>
         /// Возвращает команду сохранения данных.
         /// </summary>
-        public RelayCommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ?? (_saveCommand = new RelayCommand(obj =>
-                    ContactSerializer.SetContact(new Contact(Name, PhoneNumber, Email))));
-            }
-        }
+        public ICommand SaveCommand { get; }
 
         /// <summary>
         /// Событие, которое происходит при изменении свойства.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Создает экзепляр класса <see cref="MainVM"/>.
+        /// </summary>
+        public MainVM()
+        {
+            _contact = new Contact();
+            LoadCommand = new RelayCommand(LoadContact);
+            SaveCommand = new RelayCommand(SaveContact);
+        }
 
         /// <summary>
         /// Оповещает об изменении свойства.
@@ -124,6 +72,24 @@ namespace View.ViewModel
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
             }
+        }
+
+        /// <summary>
+        /// Загружает данные о контакте.
+        /// </summary>
+        /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
+        private void LoadContact(object obj)
+        {
+            Contact = ContactSerializer.GetContact();
+        }
+
+        /// <summary>
+        /// Сохраняет данные о контакте.
+        /// </summary>
+        /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
+        private void SaveContact(object obj)
+        {
+            ContactSerializer.SetContact(Contact);
         }
     }
 }
