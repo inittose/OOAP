@@ -31,9 +31,17 @@
 
                 <TextBox Grid.Column="1" Margin="3,8,8,3"/>
             </Grid>
-            
-            <ListBox Grid.Column="0" Grid.Row="1" 
-                d:ItemsSource="{d:SampleData ItemCount=5}" Margin="8,3,8,3"/>
+
+            <ListBox Grid.Column="0" Grid.Row="1" SelectedItem="{Binding CurrentContact}"
+                ItemsSource="{Binding Contacts}" Margin="8,3,8,3">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -42,13 +50,14 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Content="Add" Height="25" Margin="8, 3, 3, 8"/>
+                <Button Content="Add" Command="{Binding AddCommand}"
+                        Height="25" Margin="8, 3, 3, 8"/>
 
-                <Button Content="Edit" Grid.Column="1" Height="25" 
-                        Margin="3, 3, 3, 8"/>
+                <Button Content="Edit" Grid.Column="1" Command="{Binding EditCommand}"
+                        Height="25" Margin="3, 3, 3, 8"/>
 
-                <Button Content="Remove" Grid.Column="2" Height="25" 
-                        Margin="3, 3, 8, 8"/>
+                <Button Content="Remove" Grid.Column="2" Command="{Binding RemoveCommand}"
+                        Height="25" Margin="3, 3, 8, 8"/>
             </Grid>
         </Grid>
 
@@ -68,15 +77,15 @@
 
             <StackPanel Grid.Column="1">
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
-                <TextBox Margin="3, 3, 8, 3"/>
+                <TextBox Margin="3, 3, 8, 3" Text="{Binding Path=CurrentContact.Name}"/>
                 
                 <Label Content="Phone Number: " Padding="0,0,0,0" 
                        Margin="3,3,8,3"/>
-                
-                <TextBox Margin="3, 3, 8, 3"/>
+
+                <TextBox Margin="3, 3, 8, 3" Text="{Binding Path=CurrentContact.PhoneNumber}"/>
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
-                <TextBox Margin="3, 3, 8, 0"/>
-                <Button Content="Apply" Height="25" Width="75"
+                <TextBox Margin="3, 3, 8, 0" Text="{Binding Path=CurrentContact.Email}"/>
+                <Button Content="Apply" Height="25" Width="75" Command="{Binding ApplyCommand}"
                         HorizontalAlignment="Left" Margin="3, 50, 0, 0"/>
             </StackPanel>
         </Grid>

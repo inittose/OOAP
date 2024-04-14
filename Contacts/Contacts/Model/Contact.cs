@@ -34,7 +34,7 @@ namespace View.Model
                 if (_name != value)
                 {
                     _name = value;
-                    OnPropertyChanged(nameof(Name));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace View.Model
                 if (_phoneNumber != value)
                 {
                     _phoneNumber = value;
-                    OnPropertyChanged(nameof(PhoneNumber));
+                    OnPropertyChanged();
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace View.Model
                 if (_email != value)
                 {
                     _email = value;
-                    OnPropertyChanged(nameof(Email));
+                    OnPropertyChanged();
                 }
             }
         }

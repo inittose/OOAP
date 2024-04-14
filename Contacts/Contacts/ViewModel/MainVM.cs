@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -12,25 +13,24 @@ namespace View.ViewModel
     /// </summary>
     public class MainVM : INotifyPropertyChanged
     {
-        /// <summary>
-        /// Контакт.
-        /// </summary>
-        public Contact _contact;
+        private Contact _currentContact;
 
         /// <summary>
-        /// Возвращает и задает контакт.
+        /// Возвращает и задает список контактов.
         /// </summary>
-        public Contact Contact
+        public ObservableCollection<Contact> Contacts { get; set; }
+
+        public Contact CurrentContact
         {
-            get => _contact;
+            get => _currentContact;
             set
             {
-                if (_contact != value)
+                if (_currentContact != value)
                 {
-                    _contact = value;
-                    OnPropertyChanged(nameof(Contact));
+                    _currentContact = value;
+                    OnPropertyChanged();
 
-                    foreach(var prop in typeof(Contact).GetProperties())
+                    foreach (var prop in typeof(Contact).GetProperties())
                     {
                         OnPropertyChanged(prop.Name);
                     }
@@ -39,14 +39,24 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Возвращает команду загрузки данных.
+        /// Возвращает команду добавления контакта.
         /// </summary>
-        public ICommand LoadCommand { get; }
+        public ICommand AddCommand { get; }
 
         /// <summary>
-        /// Возвращает команду сохранения данных.
+        /// Возвращает команду редактирования контакта.
         /// </summary>
-        public ICommand SaveCommand { get; }
+        public ICommand EditCommand { get; }
+
+        /// <summary>
+        /// Возвращает команду удаления контакта.
+        /// </summary>
+        public ICommand RemoveCommand { get; }
+
+        /// <summary>
+        /// Возвращает команду успешного редактирования контакта.
+        /// </summary>
+        public ICommand ApplyCommand { get; }
 
         /// <summary>
         /// Событие, которое происходит при изменении свойства.
@@ -58,9 +68,12 @@ namespace View.ViewModel
         /// </summary>
         public MainVM()
         {
-            _contact = new Contact();
-            LoadCommand = new RelayCommand(LoadContact);
-            SaveCommand = new RelayCommand(SaveContact);
+            Contacts = ContactSerializer.GetContacts();
+            Contacts.Add(new Contact("NewName", "NewPhoneNumber", "NewEmail"));
+            AddCommand = new RelayCommand(AddContact);
+            EditCommand = new RelayCommand(EditContact);
+            RemoveCommand = new RelayCommand(RemoveContact);
+            ApplyCommand = new RelayCommand(ApplyContact);
         }
 
         /// <summary>
@@ -76,21 +89,29 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Загружает данные о контакте.
+        /// Добавляет нового контакта в список контактов.
         /// </summary>
-        /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
-        private void LoadContact()
+        private void AddContact()
         {
-            Contact = ContactSerializer.GetContact();
+            
         }
 
         /// <summary>
-        /// Сохраняет данные о контакте.
+        /// Редактирует информацию контакта.
         /// </summary>
-        /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
-        private void SaveContact()
+        private void EditContact()
         {
-            ContactSerializer.SetContact(Contact);
+            
+        }
+
+        private void RemoveContact()
+        {
+
+        }
+
+        private void ApplyContact()
+        {
+            ContactSerializer.SetContacts(Contacts);
         }
     }
 }

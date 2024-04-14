@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
 
@@ -19,7 +20,7 @@ namespace View.Model.Services
         /// <summary>
         /// Возвращает и задает информацию о контакте в виде json.
         /// </summary>
-        private static string ContactJson { get; set; } = string.Empty;
+        private static string ContactsJson { get; set; } = string.Empty;
 
         /// <summary>
         /// Выгружает данные о контакте, если они есть.
@@ -30,11 +31,11 @@ namespace View.Model.Services
 
             try
             {
-                ContactJson = File.ReadAllText(FilePath);
+                ContactsJson = File.ReadAllText(FilePath);
             }
             catch
             {
-                ContactJson = string.Empty;
+                ContactsJson = string.Empty;
             }
         }
 
@@ -42,18 +43,18 @@ namespace View.Model.Services
         /// Десериализует данные о контакте.
         /// </summary>
         /// <returns>Экзепляр класса <see cref="Contact"/>.</returns>
-        public static Contact GetContact()
+        public static ObservableCollection<Contact> GetContacts()
         {
-            if (ContactJson == string.Empty)
+            if (ContactsJson == string.Empty)
             {
-                return new Contact();
+                return new ObservableCollection<Contact>();
             }
             else
             {
                 try
                 {
-                    return JsonConvert.DeserializeObject<Contact>(
-                        ContactJson,
+                    return JsonConvert.DeserializeObject<ObservableCollection<Contact>>(
+                        ContactsJson,
                         new JsonSerializerSettings
                         {
                             TypeNameHandling = TypeNameHandling.All
@@ -61,10 +62,10 @@ namespace View.Model.Services
                 }
                 catch
                 {
-                    ContactJson = string.Empty;
+                    ContactsJson = string.Empty;
                     MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
 
-                    return new Contact();
+                    return new ObservableCollection<Contact>();
                 }
             }
         }
@@ -73,10 +74,10 @@ namespace View.Model.Services
         /// Сериализует данные о контакте.
         /// </summary>
         /// <param name="contact">Экзепляр класса <see cref="Contact"/>.</param>
-        public static void SetContact(Contact contact)
+        public static void SetContacts(ObservableCollection<Contact> contacts)
         {
-            ContactJson = JsonConvert.SerializeObject(
-                contact,
+            ContactsJson = JsonConvert.SerializeObject(
+                contacts,
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All
@@ -90,7 +91,7 @@ namespace View.Model.Services
         /// </summary>
         private static void SaveFile()
         {
-            File.WriteAllText(FilePath, ContactJson);
+            File.WriteAllText(FilePath, ContactsJson);
         }
     }
 }
