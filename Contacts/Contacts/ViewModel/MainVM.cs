@@ -13,28 +13,46 @@ namespace View.ViewModel
     public class MainVM : INotifyPropertyChanged
     {
         /// <summary>
-        /// Контакт.
-        /// </summary>
-        public Contact _contact;
-
-        /// <summary>
         /// Возвращает и задает контакт.
         /// </summary>
-        public Contact Contact
+        public Contact Contact { get; private set; } = new Contact();
+
+        /// <summary>
+        /// Возращает и задает имя контакта.
+        /// </summary>
+        public string Name
         {
-            get => _contact;
+            get => Contact.Name;
             set
             {
-                if (_contact != value)
-                {
-                    _contact = value;
-                    OnPropertyChanged(nameof(Contact));
+                Contact.Name = value;
+                OnPropertyChanged();
+            }
+        }
 
-                    foreach(var prop in typeof(Contact).GetProperties())
-                    {
-                        OnPropertyChanged(prop.Name);
-                    }
-                }
+        /// <summary>
+        /// Возвращает и задает номер телефона.
+        /// </summary>
+        public string PhoneNumber
+        {
+            get => Contact.PhoneNumber;
+            set
+            {
+                Contact.PhoneNumber = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает и задает электронную почту.
+        /// </summary>
+        public string Email
+        {
+            get => Contact.Email;
+            set
+            {
+                Contact.Email = value;
+                OnPropertyChanged();
             }
         }
 
@@ -58,7 +76,6 @@ namespace View.ViewModel
         /// </summary>
         public MainVM()
         {
-            _contact = new Contact();
             LoadCommand = new RelayCommand(LoadContact);
             SaveCommand = new RelayCommand(SaveContact);
         }
@@ -81,7 +98,10 @@ namespace View.ViewModel
         /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
         private void LoadContact()
         {
-            Contact = ContactSerializer.GetContact();
+            var contact = ContactSerializer.GetContact();
+            Name = contact.Name;
+            PhoneNumber = contact.PhoneNumber;
+            Email = contact.Email;
         }
 
         /// <summary>
