@@ -1,7 +1,7 @@
 ﻿namespace View.Model
 {
     /// <summary>
-    /// Хранит информацию о контакте
+    /// Хранит информацию о контакте.
     /// </summary>
     public class Contact
     {

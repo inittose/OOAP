@@ -10,6 +10,21 @@ namespace View.Model.Services
     public static class ContactSerializer
     {
         /// <summary>
+        /// Возвращает и задает контакт из файла сериализации.
+        /// </summary>
+        public static Contact Contact
+        {
+            get
+            {
+                return ConvertJsonToContact() ?? new Contact();
+            }
+            set
+            {
+                ConvertContactToJson(value);
+            }
+        }
+
+        /// <summary>
         /// Возвращает путь до файла сериализации.
         /// </summary>
         private static string FilePath { get; } = 
@@ -41,39 +56,39 @@ namespace View.Model.Services
         /// <summary>
         /// Десериализует данные о контакте.
         /// </summary>
-        /// <returns>Экзепляр класса <see cref="Contact"/>.</returns>
-        public static Contact GetContact()
+        /// <returns>Экзепляр класса <see cref="Model.Contact"/>.</returns>
+        private static Contact? ConvertJsonToContact()
         {
             if (ContactJson == string.Empty)
             {
                 return new Contact();
             }
-            else
-            {
-                try
-                {
-                    return JsonConvert.DeserializeObject<Contact>(
-                        ContactJson,
-                        new JsonSerializerSettings
-                        {
-                            TypeNameHandling = TypeNameHandling.All
-                        });
-                }
-                catch
-                {
-                    ContactJson = string.Empty;
-                    MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
 
-                    return new Contact();
-                }
+            Contact? contact = null;
+
+            try
+            {
+                contact = JsonConvert.DeserializeObject<Contact>(
+                    ContactJson,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
             }
+            catch
+            {
+                ContactJson = string.Empty;
+                MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
+            }
+
+            return contact;
         }
 
         /// <summary>
         /// Сериализует данные о контакте.
         /// </summary>
-        /// <param name="contact">Экзепляр класса <see cref="Contact"/>.</param>
-        public static void SetContact(Contact contact)
+        /// <param name="contact">Экзепляр класса <see cref="Model.Contact"/>.</param>
+        private static void ConvertContactToJson(Contact contact)
         {
             ContactJson = JsonConvert.SerializeObject(
                 contact,

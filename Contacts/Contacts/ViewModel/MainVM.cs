@@ -69,7 +69,7 @@ namespace View.ViewModel
         /// <summary>
         /// Событие, которое происходит при изменении свойства.
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Создает экзепляр класса <see cref="MainVM"/>.
@@ -83,12 +83,12 @@ namespace View.ViewModel
         /// <summary>
         /// Оповещает об изменении свойства.
         /// </summary>
-        /// <param name="prop">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        /// <param name="propertyName">Имя свойства.</param>
+        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -98,7 +98,7 @@ namespace View.ViewModel
         /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
         private void LoadContact()
         {
-            var contact = ContactSerializer.GetContact();
+            var contact = ContactSerializer.Contact;
             Name = contact.Name;
             PhoneNumber = contact.PhoneNumber;
             Email = contact.Email;
@@ -110,7 +110,7 @@ namespace View.ViewModel
         /// <param name="obj">Экзепляр класса <see cref="object"/>.</param>
         private void SaveContact()
         {
-            ContactSerializer.SetContact(Contact);
+            ContactSerializer.Contact = Contact;
         }
     }
 }
