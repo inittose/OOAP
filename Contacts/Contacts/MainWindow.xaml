@@ -51,8 +51,7 @@
                        HorizontalAlignment="Left"
                        Margin="0, 51, 0, 0"/>
                 
-                <TextBox Text="{Binding PhoneNumber,
-                    UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding PhoneNumber,    UpdateSourceTrigger=PropertyChanged}"
                          VerticalAlignment="Top"
                          Margin="5,79,5,0"/>
                 

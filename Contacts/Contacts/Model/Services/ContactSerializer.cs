@@ -16,11 +16,11 @@ namespace View.Model.Services
         {
             get
             {
-                return ConvertJsonToContact() ?? new Contact();
+                return Deserialize() ?? new Contact();
             }
             set
             {
-                ConvertContactToJson(value);
+                Serialize(value);
             }
         }
 
@@ -57,7 +57,7 @@ namespace View.Model.Services
         /// Десериализует данные о контакте.
         /// </summary>
         /// <returns>Экзепляр класса <see cref="Model.Contact"/>.</returns>
-        private static Contact? ConvertJsonToContact()
+        private static Contact? Deserialize()
         {
             if (ContactJson == string.Empty)
             {
@@ -88,7 +88,7 @@ namespace View.Model.Services
         /// Сериализует данные о контакте.
         /// </summary>
         /// <param name="contact">Экзепляр класса <see cref="Model.Contact"/>.</param>
-        private static void ConvertContactToJson(Contact contact)
+        private static void Serialize(Contact contact)
         {
             ContactJson = JsonConvert.SerializeObject(
                 contact,
