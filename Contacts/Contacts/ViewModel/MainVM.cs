@@ -13,10 +13,19 @@ namespace View.ViewModel
     /// </summary>
     public class MainVM : INotifyPropertyChanged
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private bool _isApplyVisible;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private bool _isEditingStatus;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private Contact _currentContact;
 
         /// <summary>
@@ -24,46 +33,77 @@ namespace View.ViewModel
         /// </summary>
         public ObservableCollection<Contact> Contacts { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Contact EditedContact { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Contact CurrentContact
+        {
+            get => _currentContact;
+            set
+            {
+                if (_currentContact != value)
+                {
+                    _currentContact = value;
+                    EditedContact = CurrentContact;
+                    IsEditingStatus = false;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsReadonlyContactSelected));
+
+                    foreach (var property in typeof(Contact).GetProperties())
+                    {
+                        OnPropertyChanged(property.Name);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string? Name
         {
-            get => CurrentContact?.Name;
+            get => EditedContact?.Name;
             set
             {
-                CurrentContact.Name = value;
+                EditedContact.Name = value;
                 OnPropertyChanged();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string? PhoneNumber
         {
-            get => CurrentContact?.PhoneNumber;
+            get => EditedContact?.PhoneNumber;
             set
             {
-                CurrentContact.PhoneNumber = value;
+                EditedContact.PhoneNumber = value;
                 OnPropertyChanged();
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string? Email
         {
-            get => CurrentContact?.Email;
+            get => EditedContact?.Email;
             set
             {
-                CurrentContact.Email = value;
+                EditedContact.Email = value;
                 OnPropertyChanged();
             }
         }
 
-        public bool IsApplyVisibile
-        {
-            get => _isApplyVisible;
-            set
-            {
-                _isApplyVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsEditingStatus
         {
             get
@@ -75,40 +115,27 @@ namespace View.ViewModel
                 _isEditingStatus = value;
                 IsApplyVisibile = IsEditingStatus;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsReadonlyContactSelected));
             }
         }
 
-        public Contact CurrentContact
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsApplyVisibile
         {
-            get => _currentContact;
+            get => _isApplyVisible;
             set
             {
-                if (_currentContact != value)
-                {
-                    if (IsEditingStatus)
-                    {
-                        if (Contacts.Contains(CurrentContact))
-                        {
-                            Name = ContactBeforeChanges.Name;
-                            PhoneNumber = ContactBeforeChanges.PhoneNumber;
-                            Email = ContactBeforeChanges.Email;
-                        }
-
-                        IsEditingStatus = false;
-                    }
-
-                    _currentContact = value;
-                    OnPropertyChanged();
-
-                    foreach (var prop in typeof(Contact).GetProperties())
-                    {
-                        OnPropertyChanged(prop.Name);
-                    }
-                }
+                _isApplyVisible = value;
+                OnPropertyChanged();
             }
         }
 
-        public Contact ContactBeforeChanges { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
 
         /// <summary>
         /// Возвращает команду добавления контакта.
@@ -167,6 +194,7 @@ namespace View.ViewModel
         private void AddContact()
         {
             CurrentContact = new Contact();
+            EditedContact = CurrentContact;
             IsEditingStatus = true;
         }
 
@@ -175,10 +203,13 @@ namespace View.ViewModel
         /// </summary>
         private void EditContact()
         {
-            ContactBeforeChanges = (Contact)CurrentContact.Clone();
+            EditedContact = (Contact)CurrentContact.Clone();
             IsEditingStatus = true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void RemoveContact()
         {
             var index = Contacts.IndexOf(CurrentContact);
@@ -196,11 +227,20 @@ namespace View.ViewModel
             ContactSerializer.Contacts = Contacts;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ApplyContact()
         {
             if (!Contacts.Contains(CurrentContact))
             {
                 Contacts.Add(CurrentContact);
+            }
+            else
+            {
+                CurrentContact.Name = Name;
+                CurrentContact.PhoneNumber = PhoneNumber;
+                CurrentContact.Email = Email;
             }
 
             IsEditingStatus = false;

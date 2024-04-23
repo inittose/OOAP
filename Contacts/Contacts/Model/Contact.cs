@@ -111,6 +111,10 @@ namespace View.Model
             }
         }
 
+        /// <summary>
+        /// Создает новый объект, который является копией текущего экземпляра.
+        /// </summary>
+        /// <returns>Новый объект, являющийся копией этого экземпляра.</returns>
         public object Clone()
         {
             return new Contact(Name, PhoneNumber, Email);

@@ -75,14 +75,14 @@
                         Command="{Binding EditCommand}"
                         Height="25"
                         Margin="3, 3, 3, 8"
-                        IsEnabled="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                        IsEnabled="{Binding IsReadonlyContactSelected}"/>
 
                 <Button Content="Remove"
                         Grid.Column="2"
                         Command="{Binding RemoveCommand}"
                         Height="25"
                         Margin="3, 3, 8, 8"
-                        IsEnabled="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                        IsEnabled="{Binding IsReadonlyContactSelected}"/>
             </Grid>
         </Grid>
 
