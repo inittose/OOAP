@@ -45,7 +45,7 @@
             <ListBox Grid.Column="0" 
                      Grid.Row="1" 
                      SelectedItem="{Binding CurrentContact}"
-                     ItemsSource="{Binding Contacts}" 
+                     ItemsSource="{Binding Contacts}"
                      Margin="8,3,8,3">
                 
                 <ListBox.ItemTemplate>
@@ -130,7 +130,7 @@
                         Height="25"
                         Width="75"
                         Command="{Binding ApplyCommand}"
-                        Visibility="{Binding IsApplyVisibile, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibilityConverter}}"
                         HorizontalAlignment="Left"
                         Margin="3, 50, 0, 0"/>
             </StackPanel>

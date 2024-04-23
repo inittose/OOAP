@@ -14,17 +14,12 @@ namespace View.ViewModel
     public class MainVM : INotifyPropertyChanged
     {
         /// <summary>
-        /// 
-        /// </summary>
-        private bool _isApplyVisible;
-
-        /// <summary>
-        /// 
+        /// Статус редактирования/создания контакта.
         /// </summary>
         private bool _isEditingStatus;
 
         /// <summary>
-        /// 
+        /// Текущий контакт.
         /// </summary>
         private Contact _currentContact;
 
@@ -34,12 +29,12 @@ namespace View.ViewModel
         public ObservableCollection<Contact> Contacts { get; set; }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает контакт, который поддается редактированию.
         /// </summary>
         public Contact EditedContact { get; set; }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает текущий контакт.
         /// </summary>
         public Contact CurrentContact
         {
@@ -63,7 +58,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает имя контакта.
         /// </summary>
         public string? Name
         {
@@ -76,7 +71,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает номер телефона контакта.
         /// </summary>
         public string? PhoneNumber
         {
@@ -89,7 +84,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает электронную почту контакта.
         /// </summary>
         public string? Email
         {
@@ -102,7 +97,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Возвращает и задает статус редактирования/создания контакта.
         /// </summary>
         public bool IsEditingStatus
         {
@@ -113,27 +108,13 @@ namespace View.ViewModel
             set
             {
                 _isEditingStatus = value;
-                IsApplyVisibile = IsEditingStatus;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsReadonlyContactSelected));
             }
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public bool IsApplyVisibile
-        {
-            get => _isApplyVisible;
-            set
-            {
-                _isApplyVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        /// <summary>
-        /// 
+        /// Возвращает <see cref="true"/>, если контакт выбран и контакт не редактируется.
         /// </summary>
         public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
 
@@ -167,7 +148,6 @@ namespace View.ViewModel
         /// </summary>
         public MainVM()
         {
-            _isApplyVisible = false;
             _isEditingStatus = false;
             Contacts = ContactSerializer.Contacts;
             AddCommand = new RelayCommand(AddContact);
@@ -193,8 +173,8 @@ namespace View.ViewModel
         /// </summary>
         private void AddContact()
         {
-            CurrentContact = new Contact();
-            EditedContact = CurrentContact;
+            CurrentContact = null;
+            EditedContact = new Contact();
             IsEditingStatus = true;
         }
 
@@ -208,7 +188,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Удаляет контакт.
         /// </summary>
         private void RemoveContact()
         {
@@ -228,13 +208,14 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// Сохраняет изменения контакта.
         /// </summary>
         private void ApplyContact()
         {
             if (!Contacts.Contains(CurrentContact))
             {
-                Contacts.Add(CurrentContact);
+                Contacts.Add(EditedContact);
+                CurrentContact = EditedContact;
             }
             else
             {
