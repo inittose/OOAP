@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json.Bson;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Documents;
 using System.Windows.Input;
 using View.Model;
 using View.Model.Services;
@@ -66,7 +64,7 @@ namespace View.ViewModel
             }
         }
 
-        private bool IsEditingStatus
+        public bool IsEditingStatus
         {
             get
             {
@@ -76,6 +74,7 @@ namespace View.ViewModel
             {
                 _isEditingStatus = value;
                 IsApplyVisibile = IsEditingStatus;
+                OnPropertyChanged();
             }
         }
 
@@ -88,6 +87,13 @@ namespace View.ViewModel
                 {
                     if (IsEditingStatus)
                     {
+                        if (Contacts.Contains(CurrentContact))
+                        {
+                            Name = ContactBeforeChanges.Name;
+                            PhoneNumber = ContactBeforeChanges.PhoneNumber;
+                            Email = ContactBeforeChanges.Email;
+                        }
+
                         IsEditingStatus = false;
                     }
 
@@ -102,7 +108,7 @@ namespace View.ViewModel
             }
         }
 
-        public Contact EditingContact { get; set; }
+        public Contact ContactBeforeChanges { get; set; }
 
         /// <summary>
         /// Возвращает команду добавления контакта.
@@ -169,6 +175,7 @@ namespace View.ViewModel
         /// </summary>
         private void EditContact()
         {
+            ContactBeforeChanges = (Contact)CurrentContact.Clone();
             IsEditingStatus = true;
         }
 
@@ -191,7 +198,11 @@ namespace View.ViewModel
 
         private void ApplyContact()
         {
-            Contacts.Add(CurrentContact);
+            if (!Contacts.Contains(CurrentContact))
+            {
+                Contacts.Add(CurrentContact);
+            }
+
             IsEditingStatus = false;
             ContactSerializer.Contacts = Contacts;
         }

@@ -4,13 +4,16 @@ using System.Windows.Data;
 
 namespace View.ViewModel
 {
-    [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BoolToVisibilityConverter : IValueConverter
     {
         public Visibility TrueValue { get; set; } = Visibility.Visible;
         public Visibility FalseValue { get; set; } = Visibility.Hidden;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(
+            object value, 
+            Type targetType, 
+            object parameter, 
+            CultureInfo culture)
         {
             if (value is not bool)
             {

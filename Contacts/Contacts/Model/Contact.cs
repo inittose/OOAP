@@ -6,7 +6,7 @@ namespace View.Model
     /// <summary>
     /// Хранит информацию о контакте
     /// </summary>
-    public class Contact : INotifyPropertyChanged
+    public class Contact : INotifyPropertyChanged, ICloneable
     {
         /// <summary>
         /// Имя контакта.
@@ -109,6 +109,11 @@ namespace View.Model
             { 
                 PropertyChanged(this, new PropertyChangedEventArgs(prop)); 
             }
+        }
+
+        public object Clone()
+        {
+            return new Contact(Name, PhoneNumber, Email);
         }
     }
 }

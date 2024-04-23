@@ -11,6 +11,7 @@
         MinHeight="300" 
         MinWidth="500">
     <Window.Resources>
+        <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
     <Grid>
@@ -66,19 +67,22 @@
                 <Button Content="Add"
                         Command="{Binding AddCommand}"
                         Height="25"
-                        Margin="8, 3, 3, 8"/>
+                        Margin="8, 3, 3, 8"
+                        IsEnabled="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
 
                 <Button Content="Edit"
                         Grid.Column="1"
                         Command="{Binding EditCommand}"
                         Height="25"
-                        Margin="3, 3, 3, 8"/>
+                        Margin="3, 3, 3, 8"
+                        IsEnabled="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
 
                 <Button Content="Remove"
                         Grid.Column="2"
                         Command="{Binding RemoveCommand}"
                         Height="25"
-                        Margin="3, 3, 8, 8"/>
+                        Margin="3, 3, 8, 8"
+                        IsEnabled="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
             </Grid>
         </Grid>
 
@@ -107,17 +111,20 @@
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
                 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=Name}"/>
+                         Text="{Binding Path=Name}"
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
                 
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=PhoneNumber}"/>
+                         Text="{Binding Path=PhoneNumber}"
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
                 
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
                 
                 <TextBox Margin="3, 3, 8, 0"
-                         Text="{Binding Path=Email}"/>
+                         Text="{Binding Path=Email}"
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
                 
                 <Button Content="Apply"
                         Height="25"
