@@ -3,13 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Contacts"
+        xmlns:local="clr-namespace:View.ViewModel"
         mc:Ignorable="d"
         Title="Contacts" 
         Height="322" 
         Width="532" 
         MinHeight="300" 
         MinWidth="500">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" MinWidth="200"/>
@@ -104,22 +107,23 @@
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
                 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=CurrentContact.Name}"/>
+                         Text="{Binding Path=Name}"/>
                 
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=CurrentContact.PhoneNumber}"/>
+                         Text="{Binding Path=PhoneNumber}"/>
                 
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
                 
                 <TextBox Margin="3, 3, 8, 0"
-                         Text="{Binding Path=CurrentContact.Email}"/>
+                         Text="{Binding Path=Email}"/>
                 
                 <Button Content="Apply"
                         Height="25"
                         Width="75"
                         Command="{Binding ApplyCommand}"
+                        Visibility="{Binding IsApplyVisibile, Converter={StaticResource BoolToVisibilityConverter}}"
                         HorizontalAlignment="Left"
                         Margin="3, 50, 0, 0"/>
             </StackPanel>

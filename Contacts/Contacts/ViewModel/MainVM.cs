@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json.Bson;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Documents;
 using System.Windows.Input;
 using View.Model;
 using View.Model.Services;
@@ -13,12 +15,69 @@ namespace View.ViewModel
     /// </summary>
     public class MainVM : INotifyPropertyChanged
     {
+        private bool _isApplyVisible;
+
+        private bool _isEditingStatus;
+
         private Contact _currentContact;
 
         /// <summary>
         /// Возвращает и задает список контактов.
         /// </summary>
         public ObservableCollection<Contact> Contacts { get; set; }
+
+        public string? Name
+        {
+            get => CurrentContact?.Name;
+            set
+            {
+                CurrentContact.Name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string? PhoneNumber
+        {
+            get => CurrentContact?.PhoneNumber;
+            set
+            {
+                CurrentContact.PhoneNumber = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string? Email
+        {
+            get => CurrentContact?.Email;
+            set
+            {
+                CurrentContact.Email = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsApplyVisibile
+        {
+            get => _isApplyVisible;
+            set
+            {
+                _isApplyVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool IsEditingStatus
+        {
+            get
+            {
+                return _isEditingStatus;
+            }
+            set
+            {
+                _isEditingStatus = value;
+                IsApplyVisibile = IsEditingStatus;
+            }
+        }
 
         public Contact CurrentContact
         {
@@ -27,6 +86,11 @@ namespace View.ViewModel
             {
                 if (_currentContact != value)
                 {
+                    if (IsEditingStatus)
+                    {
+                        IsEditingStatus = false;
+                    }
+
                     _currentContact = value;
                     OnPropertyChanged();
 
@@ -37,6 +101,8 @@ namespace View.ViewModel
                 }
             }
         }
+
+        public Contact EditingContact { get; set; }
 
         /// <summary>
         /// Возвращает команду добавления контакта.
@@ -68,8 +134,9 @@ namespace View.ViewModel
         /// </summary>
         public MainVM()
         {
+            _isApplyVisible = false;
+            _isEditingStatus = false;
             Contacts = ContactSerializer.Contacts;
-            Contacts.Add(new Contact("NewName", "NewPhoneNumber", "NewEmail"));
             AddCommand = new RelayCommand(AddContact);
             EditCommand = new RelayCommand(EditContact);
             RemoveCommand = new RelayCommand(RemoveContact);
@@ -79,12 +146,12 @@ namespace View.ViewModel
         /// <summary>
         /// Оповещает об изменении свойства.
         /// </summary>
-        /// <param name="prop">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        /// <param name="property">Имя свойства.</param>
+        public void OnPropertyChanged([CallerMemberName] string property = "")
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
 
@@ -93,7 +160,8 @@ namespace View.ViewModel
         /// </summary>
         private void AddContact()
         {
-            
+            CurrentContact = new Contact();
+            IsEditingStatus = true;
         }
 
         /// <summary>
@@ -101,16 +169,30 @@ namespace View.ViewModel
         /// </summary>
         private void EditContact()
         {
-            
+            IsEditingStatus = true;
         }
 
         private void RemoveContact()
         {
+            var index = Contacts.IndexOf(CurrentContact);
+            Contacts.Remove(CurrentContact);
 
+            if (index > 0 && index >= Contacts.Count)
+            {
+                CurrentContact = Contacts[Contacts.Count - 1];
+            }
+            else if (index >= 0 && index < Contacts.Count)
+            {
+                CurrentContact = Contacts[index];
+            }
+
+            ContactSerializer.Contacts = Contacts;
         }
 
         private void ApplyContact()
         {
+            Contacts.Add(CurrentContact);
+            IsEditingStatus = false;
             ContactSerializer.Contacts = Contacts;
         }
     }
