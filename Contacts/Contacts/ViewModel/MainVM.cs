@@ -68,7 +68,7 @@ namespace View.ViewModel
         /// </summary>
         public MainVM()
         {
-            Contacts = ContactSerializer.GetContacts();
+            Contacts = ContactSerializer.Contacts;
             Contacts.Add(new Contact("NewName", "NewPhoneNumber", "NewEmail"));
             AddCommand = new RelayCommand(AddContact);
             EditCommand = new RelayCommand(EditContact);
@@ -111,7 +111,7 @@ namespace View.ViewModel
 
         private void ApplyContact()
         {
-            ContactSerializer.SetContacts(Contacts);
+            ContactSerializer.Contacts = Contacts;
         }
     }
 }

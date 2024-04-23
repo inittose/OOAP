@@ -1,22 +1,23 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
 
 namespace View.Model.Services
 {
     /// <summary>
-    /// Сериализует и десериализует данные контакта.
+    /// Сериализует и десериализует данные контактов.
     /// </summary>
     public static class ContactSerializer
     {
         /// <summary>
-        /// Возвращает и задает контакт из файла сериализации.
+        /// Возвращает и задает контакты из файла сериализации.
         /// </summary>
-        public static Contact Contact
+        public static ObservableCollection<Contact> Contacts
         {
             get
             {
-                return Deserialize() ?? new Contact();
+                return Deserialize() ?? new ObservableCollection<Contact>();
             }
             set
             {
@@ -32,12 +33,12 @@ namespace View.Model.Services
             "\\Contacts\\Contact.json";
 
         /// <summary>
-        /// Возвращает и задает информацию о контакте в виде json.
+        /// Возвращает и задает информацию о контактах в виде json.
         /// </summary>
         private static string ContactJson { get; set; } = string.Empty;
 
         /// <summary>
-        /// Выгружает данные о контакте, если они есть.
+        /// Выгружает данные о контактах, если они есть.
         /// </summary>
         static ContactSerializer()
         {
@@ -54,21 +55,21 @@ namespace View.Model.Services
         }
 
         /// <summary>
-        /// Десериализует данные о контакте.
+        /// Десериализует данные о контактах.
         /// </summary>
         /// <returns>Экзепляр класса <see cref="Model.Contact"/>.</returns>
-        private static Contact? Deserialize()
+        private static ObservableCollection<Contact>? Deserialize()
         {
             if (ContactJson == string.Empty)
             {
-                return new Contact();
+                return new ObservableCollection<Contact>();
             }
 
-            Contact? contact = null;
+            ObservableCollection<Contact>? contacts = null;
 
             try
             {
-                contact = JsonConvert.DeserializeObject<Contact>(
+                contacts = JsonConvert.DeserializeObject<ObservableCollection<Contact>>(
                     ContactJson,
                     new JsonSerializerSettings
                     {
@@ -81,14 +82,14 @@ namespace View.Model.Services
                 MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
             }
 
-            return contact;
+            return contacts;
         }
 
         /// <summary>
-        /// Сериализует данные о контакте.
+        /// Сериализует данные о контактах.
         /// </summary>
         /// <param name="contact">Экзепляр класса <see cref="Model.Contact"/>.</param>
-        private static void Serialize(Contact contact)
+        private static void Serialize(ObservableCollection<Contact> contact)
         {
             ContactJson = JsonConvert.SerializeObject(
                 contact,
@@ -101,7 +102,7 @@ namespace View.Model.Services
         }
 
         /// <summary>
-        /// Сохраняет данные о контакте в файл сериализации.
+        /// Сохраняет данные о контактах в файл сериализации.
         /// </summary>
         private static void SaveFile()
         {
