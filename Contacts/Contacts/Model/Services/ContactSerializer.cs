@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using Newtonsoft.Json;
 
@@ -11,16 +10,31 @@ namespace View.Model.Services
     public static class ContactSerializer
     {
         /// <summary>
+        /// Возвращает и задает контакт из файла сериализации.
+        /// </summary>
+        public static Contact Contact
+        {
+            get
+            {
+                return Deserialize() ?? new Contact();
+            }
+            set
+            {
+                Serialize(value);
+            }
+        }
+
+        /// <summary>
         /// Возвращает путь до файла сериализации.
         /// </summary>
-        private static string FilePath { get; } = 
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + 
+        private static string FilePath { get; } =
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Contacts\\Contact.json";
 
         /// <summary>
         /// Возвращает и задает информацию о контакте в виде json.
         /// </summary>
-        private static string ContactsJson { get; set; } = string.Empty;
+        private static string ContactJson { get; set; } = string.Empty;
 
         /// <summary>
         /// Выгружает данные о контакте, если они есть.
@@ -31,53 +45,53 @@ namespace View.Model.Services
 
             try
             {
-                ContactsJson = File.ReadAllText(FilePath);
+                ContactJson = File.ReadAllText(FilePath);
             }
             catch
             {
-                ContactsJson = string.Empty;
+                ContactJson = string.Empty;
             }
         }
 
         /// <summary>
         /// Десериализует данные о контакте.
         /// </summary>
-        /// <returns>Экзепляр класса <see cref="Contact"/>.</returns>
-        public static ObservableCollection<Contact> GetContacts()
+        /// <returns>Экзепляр класса <see cref="Model.Contact"/>.</returns>
+        private static Contact? Deserialize()
         {
-            if (ContactsJson == string.Empty)
+            if (ContactJson == string.Empty)
             {
-                return new ObservableCollection<Contact>();
+                return new Contact();
             }
-            else
-            {
-                try
-                {
-                    return JsonConvert.DeserializeObject<ObservableCollection<Contact>>(
-                        ContactsJson,
-                        new JsonSerializerSettings
-                        {
-                            TypeNameHandling = TypeNameHandling.All
-                        });
-                }
-                catch
-                {
-                    ContactsJson = string.Empty;
-                    MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
 
-                    return new ObservableCollection<Contact>();
-                }
+            Contact? contact = null;
+
+            try
+            {
+                contact = JsonConvert.DeserializeObject<Contact>(
+                    ContactJson,
+                    new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.All
+                    });
             }
+            catch
+            {
+                ContactJson = string.Empty;
+                MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
+            }
+
+            return contact;
         }
 
         /// <summary>
         /// Сериализует данные о контакте.
         /// </summary>
-        /// <param name="contact">Экзепляр класса <see cref="Contact"/>.</param>
-        public static void SetContacts(ObservableCollection<Contact> contacts)
+        /// <param name="contact">Экзепляр класса <see cref="Model.Contact"/>.</param>
+        private static void Serialize(Contact contact)
         {
-            ContactsJson = JsonConvert.SerializeObject(
-                contacts,
+            ContactJson = JsonConvert.SerializeObject(
+                contact,
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All
@@ -91,7 +105,7 @@ namespace View.Model.Services
         /// </summary>
         private static void SaveFile()
         {
-            File.WriteAllText(FilePath, ContactsJson);
+            File.WriteAllText(FilePath, ContactJson);
         }
     }
 }
