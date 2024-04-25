@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View.ViewModel"
+        xmlns:controls="clr-namespace:View.ViewModel.Controls"
         mc:Ignorable="d"
         Title="Contacts" 
         Height="322" 
@@ -107,46 +108,18 @@
                       VerticalAlignment="Stretch"
                       Background="White"/>
 
-        <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Image Grid.Column="0"
-                   Source="/photo_placeholder_100x100.png"
-                   Width="75"
-                   Height="75"
-                   Margin="3, 30, 3, 8"
-                   VerticalAlignment="Top"/>
-
-            <StackPanel Grid.Column="1">
-                <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
-                
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=Name}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
-                
-                <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
-
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=PhoneNumber}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
-                
-                <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
-                
-                <TextBox Margin="3, 3, 8, 0"
-                         Text="{Binding Path=Email}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
-                
-                <Button Content="Apply"
-                        Height="25"
-                        Width="75"
-                        Command="{Binding ApplyCommand}"
-                        Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibilityConverter}}"
-                        HorizontalAlignment="Left"
-                        Margin="3, 50, 0, 0"/>
-            </StackPanel>
-        </Grid>
+        <StackPanel Grid.Column="2" Margin="3">
+            <controls:ContactControl
+                Grid.Column="2"
+                DataContext="{Binding CurrentContact}"/>
+            
+            <Button Content="Apply"
+                Height="25"
+                Width="75"
+                Command="{Binding ApplyCommand}"
+                HorizontalAlignment="Left"
+                Margin="84, 50, 0, 0"
+                Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        </StackPanel>
     </Grid>
 </Window>
