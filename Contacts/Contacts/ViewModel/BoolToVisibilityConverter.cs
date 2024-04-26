@@ -49,17 +49,7 @@ namespace View.ViewModel
             object parameter,
             CultureInfo culture)
         {
-            if (Equals(value, Visibility.Visible))
-            {
-                return true;
-            }
-
-            if (Equals(value, Visibility.Hidden))
-            {
-                return false;
-            }
-
-            return null;
+            return Equals(value, Visibility.Visible);
         }
     }
 }
