@@ -25,13 +25,15 @@ namespace View.ViewModel
             CultureInfo culture)
         {
             if (targetType != typeof(bool))
+            {
                 throw new InvalidOperationException("The target must be a boolean.");
+            }
 
             return !(bool)value;
         }
 
         /// <summary>
-        /// Не поддерживается.
+        /// Инвертирует значение <see cref="bool"/>.
         /// </summary>
         /// <param name="value">Значение, произведенное исходной привязкой.</param>
         /// <param name="targetType">Тип целевого свойства привязки.</param>
@@ -45,7 +47,7 @@ namespace View.ViewModel
             object parameter,
             CultureInfo culture)
         {
-            throw new NotSupportedException();
+            return Convert(value, targetType, parameter, culture);
         }
     }
 }
