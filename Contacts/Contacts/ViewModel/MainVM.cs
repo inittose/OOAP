@@ -60,9 +60,9 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает и задает имя контакта.
         /// </summary>
-        public string? Name
+        public string Name
         {
-            get => EditedContact?.Name;
+            get => EditedContact?.Name ?? string.Empty;
             set
             {
                 EditedContact.Name = value;
@@ -73,9 +73,9 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает и задает номер телефона контакта.
         /// </summary>
-        public string? PhoneNumber
+        public string PhoneNumber
         {
-            get => EditedContact?.PhoneNumber;
+            get => EditedContact?.PhoneNumber ?? string.Empty;
             set
             {
                 EditedContact.PhoneNumber = value;
@@ -86,9 +86,9 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает и задает электронную почту контакта.
         /// </summary>
-        public string? Email
+        public string Email
         {
-            get => EditedContact?.Email;
+            get => EditedContact?.Email ?? string.Empty;
             set
             {
                 EditedContact.Email = value;
@@ -195,11 +195,11 @@ namespace View.ViewModel
             var index = Contacts.IndexOf(CurrentContact);
             Contacts.Remove(CurrentContact);
 
-            if (index > 0 && index >= Contacts.Count)
+            if (0 < index && index >= Contacts.Count)
             {
                 CurrentContact = Contacts[Contacts.Count - 1];
             }
-            else if (index >= 0 && index < Contacts.Count)
+            else if (0 <= index && index < Contacts.Count)
             {
                 CurrentContact = Contacts[index];
             }
