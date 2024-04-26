@@ -57,8 +57,8 @@ namespace View.Model.Services
         /// <summary>
         /// Десериализует данные о контактах.
         /// </summary>
-        /// <returns>Экзепляр класса <see cref="Model.Contact"/>.</returns>
-        private static ObservableCollection<Contact>? Deserialize()
+        /// <returns>Экземпляр класса <see cref="Model.Contact"/>.</returns>
+        private static ObservableCollection<Contact> Deserialize()
         {
             if (ContactJson == string.Empty)
             {
@@ -79,16 +79,15 @@ namespace View.Model.Services
             catch
             {
                 ContactJson = string.Empty;
-                MessageBox.Show("Data is corrupted.\nSave files have been cleared.");
             }
 
-            return contacts;
+            return contacts ?? new ObservableCollection<Contact>();
         }
 
         /// <summary>
         /// Сериализует данные о контактах.
         /// </summary>
-        /// <param name="contact">Экзепляр класса <see cref="Model.Contact"/>.</param>
+        /// <param name="contact">Экземпляр класса <see cref="Model.Contact"/>.</param>
         private static void Serialize(ObservableCollection<Contact> contact)
         {
             ContactJson = JsonConvert.SerializeObject(
