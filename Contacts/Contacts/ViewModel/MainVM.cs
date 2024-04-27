@@ -11,7 +11,7 @@ namespace View.ViewModel
     /// <summary>
     /// Управляет логикой работы программы.
     /// </summary>
-    public class MainVM : INotifyPropertyChanged
+    public class MainVM : INotifyPropertyChanged, IDataErrorInfo
     {
         /// <summary>
         /// Статус редактирования/создания контакта.
@@ -137,6 +137,81 @@ namespace View.ViewModel
         /// Возвращает команду успешного редактирования контакта.
         /// </summary>
         public ICommand ApplyCommand { get; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public string this[string propertyName]
+        {
+            get
+            {
+                string error = String.Empty;
+                switch (propertyName)
+                {
+                    case nameof(Name):
+                        try
+                        {
+                            ValueValidator.AssertStringOnLength(
+                                Name,
+                                Contact.NameLengthLimit,
+                                nameof(Name));
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            error = ex.Message;
+                        }
+
+                        break;
+                    case nameof(PhoneNumber):
+                        try
+                        {
+                            ValueValidator.AssertStringOnLength(
+                                PhoneNumber,
+                                Contact.PhoneNumberLengthLimit,
+                                nameof(PhoneNumber));
+
+                            ValueValidator.AssertStringOnMask(
+                                Contact.PhoneNumberMask,
+                                PhoneNumber,
+                                nameof(PhoneNumber));
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            error = ex.Message;
+                        }
+
+                        break;
+                    case nameof(Email):
+                        try
+                        {
+                            ValueValidator.AssertStringOnLength(
+                                Email,
+                                Contact.EmailLengthLimit,
+                                nameof(Email));
+
+                            ValueValidator.AssertStringOnMask(
+                                Email,
+                                Contact.EmailMask,
+                                nameof(Email));
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            error = ex.Message;
+                        }
+
+                        break;
+                }
+
+                return error;
+            }
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string Error => string.Empty;
 
         /// <summary>
         /// Событие, которое происходит при изменении свойства.
