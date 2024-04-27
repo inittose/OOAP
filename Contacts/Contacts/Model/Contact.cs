@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using View.Model.Services;
 
 namespace View.Model
@@ -8,7 +7,7 @@ namespace View.Model
     /// <summary>
     /// Хранит информацию о контакте
     /// </summary>
-    public class Contact : INotifyPropertyChanged, ICloneable, IDataErrorInfo
+    public class Contact : INotifyPropertyChanged, ICloneable
     {
         public const int NameLengthLimit = 100;
 
@@ -82,81 +81,6 @@ namespace View.Model
                 }
             }
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
-        public string this[string propertyName]
-        {
-            get
-            {
-                string error = String.Empty;
-                switch (propertyName)
-                {
-                    case nameof(Name):
-                        try
-                        {
-                            ValueValidator.AssertStringOnLength(
-                                Name,
-                                NameLengthLimit,
-                                nameof(Name));
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            error = ex.Message;
-                        }
-
-                        break;
-                    case nameof(PhoneNumber):
-                        try
-                        {
-                            ValueValidator.AssertStringOnLength(
-                                PhoneNumber,
-                                PhoneNumberLengthLimit,
-                                nameof(PhoneNumber));
-
-                            ValueValidator.AssertStringOnMask(
-                                PhoneNumberMask,
-                                PhoneNumber,
-                                nameof(PhoneNumber));
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            error = ex.Message;
-                        }
-
-                        break;
-                    case nameof(Email):
-                        try
-                        {
-                            ValueValidator.AssertStringOnLength(
-                                Email,
-                                EmailLengthLimit,
-                                nameof(Email));
-
-                            ValueValidator.AssertStringOnMask(
-                                Email,
-                                EmailMask,
-                                nameof(Email));
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            error = ex.Message;
-                        }
-
-                        break;
-                }
-
-                return error;
-            }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public string Error => string.Empty;
 
         /// <summary>
         /// Событие, которое происходит при изменении свойства.
