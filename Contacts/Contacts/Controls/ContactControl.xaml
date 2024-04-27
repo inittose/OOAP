@@ -10,6 +10,10 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <viewModel:InverseBoolConverter x:Key="InverseBoolConverter"/>
+
+        <ControlTemplate x:Key="validationFailed">
+            
+        </ControlTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid Grid.Column="2">
@@ -29,20 +33,42 @@
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                    Text="{Binding Path=Name}"
-                    IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
+                    <TextBox.Text>
+                        <Binding Path="EditedContact.Name">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                    Text="{Binding Path=PhoneNumber}"
-                     IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
+                    <TextBox.Text>
+                        <Binding Path="EditedContact.PhoneNumber">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+
 
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
 
-                <TextBox Margin="3, 3, 8, 0"
-                    Text="{Binding Path=Email}"
-                    IsReadOnly="{Binding IsEditingStatus,Converter={StaticResource InverseBoolConverter}}"/>
+                <TextBox Margin="3, 3, 8, 3"
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
+                    <TextBox.Text>
+                        <Binding Path="EditedContact.Email">
+                            <Binding.ValidationRules>
+                                <DataErrorValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
             </StackPanel>
         </Grid>
     </Grid>
