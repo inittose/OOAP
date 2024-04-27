@@ -30,7 +30,7 @@
         {
             foreach (var character in mask)
             {
-                if (value.Contains(character))
+                if (!value.Contains(character))
                 {
                     throw new ArgumentException(
                         $"{propertyName} must contain the {character} symbol.");
