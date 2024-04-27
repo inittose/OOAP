@@ -35,7 +35,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
-                        <Binding Path="EditedContact.Name">
+                        <Binding Path="Name">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -48,7 +48,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
-                        <Binding Path="EditedContact.PhoneNumber">
+                        <Binding Path="PhoneNumber">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -62,7 +62,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
-                        <Binding Path="EditedContact.Email">
+                        <Binding Path="Email">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
