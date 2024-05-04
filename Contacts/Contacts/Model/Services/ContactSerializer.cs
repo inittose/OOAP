@@ -14,14 +14,8 @@ namespace View.Model.Services
         /// </summary>
         public static ObservableCollection<Contact> Contacts
         {
-            get
-            {
-                return Deserialize() ?? new ObservableCollection<Contact>();
-            }
-            set
-            {
-                Serialize(value);
-            }
+            get => Deserialize() ?? new ObservableCollection<Contact>();
+            set => Serialize(value);
         }
 
         /// <summary>
