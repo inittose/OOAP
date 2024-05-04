@@ -24,7 +24,7 @@ namespace View.ViewModel
         private Contact _currentContact;
 
         /// <summary>
-        /// TODO
+        /// Контакт, который поддается редактированию.
         /// </summary>
         private Contact _editedContact;
 
@@ -122,6 +122,9 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Возвращает статус валидации контакта.
+        /// </summary>
         public bool IsContactCorrect
         {
             get
@@ -138,6 +141,9 @@ namespace View.ViewModel
             }
         }
 
+        /// <summary>
+        /// Возвращает словарь ошибок, где ключ - свойство, а значение - текст ошибки.
+        /// </summary>
         public Dictionary<string, string> Errors { get; } = new Dictionary<string, string>();
 
         /// <summary>
@@ -166,10 +172,10 @@ namespace View.ViewModel
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// TODO
+        /// Возвращает сообщение ошибки по заданному свойству.
         /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <param name="propertyName">Имя свойства.</param>
+        /// <returns>Вернет <see cref="string.Empty"/>, если валидация прошла успешно.</returns>
         public string this[string propertyName]
         {
             get
@@ -247,7 +253,7 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// TODO
+        /// Возвращает сообщение ошибки.
         /// </summary>
         public string Error => string.Empty;
 
