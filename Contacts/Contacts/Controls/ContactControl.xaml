@@ -56,6 +56,8 @@
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         PreviewTextInput="TextBox_PreviewTextInput"
+                         DataObject.Pasting="TextBox_Pasting"
                          Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
