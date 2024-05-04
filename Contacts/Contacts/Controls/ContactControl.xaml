@@ -11,10 +11,25 @@
     <UserControl.Resources>
         <viewModel:InverseBoolConverter x:Key="InverseBoolConverter"/>
 
-        <ControlTemplate x:Key="validationFailed">
-            
-        </ControlTemplate>
+        <Style TargetType="{x:Type TextBox}" x:Key="validationFailed">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderThickness="1">
+                            <AdornedElementPlaceholder/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="#FFDDDD"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
+    
     <Grid>
         <Grid Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -33,6 +48,7 @@
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
                         <Binding Path="Name">
@@ -46,9 +62,10 @@
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
-                        <Binding Path="PhoneNumber">
+                        <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
@@ -60,9 +77,11 @@
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Style="{StaticResource validationFailed}"
+                         Validation.ErrorTemplate="{x:Null}"
                          IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
                     <TextBox.Text>
-                        <Binding Path="Email">
+                        <Binding Path="Email" ValidatesOnDataErrors="False">
                             <Binding.ValidationRules>
                                 <DataErrorValidationRule />
                             </Binding.ValidationRules>
