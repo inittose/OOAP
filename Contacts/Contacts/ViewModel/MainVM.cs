@@ -24,6 +24,11 @@ namespace View.ViewModel
         private Contact _currentContact;
 
         /// <summary>
+        /// TODO
+        /// </summary>
+        private Contact _editedContact;
+
+        /// <summary>
         /// Возвращает и задает список контактов.
         /// </summary>
         public ObservableCollection<Contact> Contacts { get; set; }
@@ -31,7 +36,19 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает и задает контакт, который поддается редактированию.
         /// </summary>
-        public Contact EditedContact { get; set; }
+        public Contact EditedContact
+        {
+            get => _editedContact;
+            set
+            {
+                _editedContact = value;
+
+                foreach (var property in typeof(Contact).GetProperties())
+                {
+                    OnPropertyChanged(property.Name);
+                }
+            }
+        }
 
         /// <summary>
         /// Возвращает и задает текущий контакт.
@@ -48,11 +65,6 @@ namespace View.ViewModel
                     IsEditingStatus = false;
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
-
-                    foreach (var property in typeof(Contact).GetProperties())
-                    {
-                        OnPropertyChanged(property.Name);
-                    }
                 }
             }
         }
@@ -101,10 +113,7 @@ namespace View.ViewModel
         /// </summary>
         public bool IsEditingStatus
         {
-            get
-            {
-                return _isEditingStatus;
-            }
+            get => _isEditingStatus;
             set
             {
                 _isEditingStatus = value;
@@ -112,6 +121,24 @@ namespace View.ViewModel
                 OnPropertyChanged(nameof(IsReadonlyContactSelected));
             }
         }
+
+        public bool IsContactCorrect
+        {
+            get
+            {
+                foreach (var error in Errors)
+                {
+                    if (error.Value != string.Empty)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        public Dictionary<string, string> Errors { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Возвращает <see cref="true"/>, если контакт выбран и контакт не редактируется.
@@ -148,6 +175,14 @@ namespace View.ViewModel
             get
             {
                 string error = String.Empty;
+
+                if (!IsEditingStatus)
+                {
+                    Errors[propertyName] = error;
+                    OnPropertyChanged(nameof(IsContactCorrect));
+                    return error;
+                }
+
                 switch (propertyName)
                 {
                     case nameof(Name):
@@ -204,6 +239,9 @@ namespace View.ViewModel
                         break;
                 }
 
+                Errors[propertyName] = error;
+                OnPropertyChanged(nameof(IsContactCorrect));
+
                 return error;
             }
         }
@@ -229,6 +267,9 @@ namespace View.ViewModel
             EditCommand = new RelayCommand(EditContact);
             RemoveCommand = new RelayCommand(RemoveContact);
             ApplyCommand = new RelayCommand(ApplyContact);
+            Errors.Add(nameof(Name), string.Empty);
+            Errors.Add(nameof(PhoneNumber), string.Empty);
+            Errors.Add(nameof(Email), string.Empty);
         }
 
         /// <summary>
@@ -249,8 +290,8 @@ namespace View.ViewModel
         private void AddContact()
         {
             CurrentContact = null;
-            EditedContact = new Contact();
             IsEditingStatus = true;
+            EditedContact = new Contact();
         }
 
         /// <summary>
@@ -258,8 +299,8 @@ namespace View.ViewModel
         /// </summary>
         private void EditContact()
         {
-            EditedContact = (Contact)CurrentContact.Clone();
             IsEditingStatus = true;
+            EditedContact = (Contact)CurrentContact.Clone();
         }
 
         /// <summary>

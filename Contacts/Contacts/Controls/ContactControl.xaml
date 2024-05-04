@@ -48,46 +48,27 @@
                 <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
-                    <TextBox.Text>
-                        <Binding Path="Name">
-                            <Binding.ValidationRules>
-                                <DataErrorValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+
 
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
-                    <TextBox.Text>
-                        <Binding Path="PhoneNumber" UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                                <DataErrorValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+
 
 
                 <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
 
                 <TextBox Margin="3, 3, 8, 3"
+                         Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         Validation.ErrorTemplate="{x:Null}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}">
-                    <TextBox.Text>
-                        <Binding Path="Email" ValidatesOnDataErrors="False">
-                            <Binding.ValidationRules>
-                                <DataErrorValidationRule />
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+
             </StackPanel>
         </Grid>
     </Grid>

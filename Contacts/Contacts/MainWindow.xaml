@@ -118,7 +118,8 @@
                 Command="{Binding ApplyCommand}"
                 HorizontalAlignment="Left"
                 Margin="84, 50, 0, 0"
-                Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibilityConverter}}"
+                IsEnabled="{Binding IsContactCorrect}"/>
         </StackPanel>
     </Grid>
 </Window>
