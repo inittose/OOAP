@@ -6,7 +6,7 @@
     public static class ValueValidator
     {
         /// <summary>
-        /// Проверка, превышает ли строка максимальную длину.
+        /// Проверяет, превышает ли строка максимальную длину.
         /// </summary>
         /// <param name="value">Входное значение.</param>
         /// <param name="maxLength">Максимальная длина строки.</param>
@@ -21,10 +21,10 @@
         }
 
         /// <summary>
-        /// TODO
+        /// Проверяет, содержит ли строка символы маски-строки.
         /// </summary>
         /// <param name="value">Входное значение.</param>
-        /// <param name="mask">TODO</param>
+        /// <param name="mask">Маска-строка.</param>
         /// <param name="propertyName">Имя свойства класса.</param>
         public static void AssertStringOnMask(string value, string mask, string propertyName)
         {
