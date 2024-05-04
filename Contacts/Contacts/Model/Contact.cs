@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using View.Model.Services;
 
 namespace View.Model
 {
@@ -9,14 +8,29 @@ namespace View.Model
     /// </summary>
     public class Contact : INotifyPropertyChanged, ICloneable
     {
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="Name"/>.
+        /// </summary>
         public const int NameLengthLimit = 100;
 
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
+        /// </summary>
         public const int PhoneNumberLengthLimit = 100;
 
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="Email"/>.
+        /// </summary>
         public const int EmailLengthLimit = 100;
 
+        /// <summary>
+        /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
+        /// </summary>
         public const string PhoneNumberMask = "1234567890+-() ";
 
+        /// <summary>
+        /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
+        /// </summary>
         public const string EmailMask = "@";
 
         /// <summary>
