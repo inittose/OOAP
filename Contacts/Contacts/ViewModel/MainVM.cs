@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using View.Model;
 using View.Model.Services;
@@ -110,6 +111,8 @@ namespace View.ViewModel
                 _isEditingStatus = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsReadonlyContactSelected));
+                OnPropertyChanged(nameof(IsApplyButtonVisible));
+                OnPropertyChanged(nameof(IsSelectingStatus));
             }
         }
 
@@ -117,6 +120,17 @@ namespace View.ViewModel
         /// Возвращает <see cref="true"/>, если контакт выбран и контакт не редактируется.
         /// </summary>
         public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
+
+        /// <summary>
+        /// Возвращает <see cref="Visibility.Visible"/>, если контакт редактируется.
+        /// </summary>
+        public Visibility IsApplyButtonVisible => 
+            IsEditingStatus ? Visibility.Visible : Visibility.Hidden;
+
+        /// <summary>
+        /// Возвращает <see cref="true"/>, если контакт не редактируется.
+        /// </summary>
+        public bool IsSelectingStatus => !IsEditingStatus;
 
         /// <summary>
         /// Возвращает команду добавления контакта.
