@@ -9,8 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="photo_placeholder_100x100.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="photo_placeholder_100x100.png" />
   </ItemGroup>
 
 </Project>
