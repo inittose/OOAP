@@ -9,8 +9,6 @@
              d:DesignHeight="450" 
              d:DesignWidth="800">
     <UserControl.Resources>
-        <viewModel:InverseBoolConverter x:Key="InverseBoolConverter"/>
-
         <Style TargetType="{x:Type TextBox}" x:Key="validationFailed">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -50,7 +48,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
 
 
                 <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
@@ -60,7 +58,7 @@
                          DataObject.Pasting="TextBox_Pasting"
                          Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
 
 
 
@@ -69,7 +67,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
-                         IsReadOnly="{Binding IsEditingStatus, Converter={StaticResource InverseBoolConverter}}"/>
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
 
             </StackPanel>
         </Grid>
