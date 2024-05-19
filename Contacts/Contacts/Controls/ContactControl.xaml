@@ -9,6 +9,11 @@
              d:DesignHeight="450" 
              d:DesignWidth="800">
     <UserControl.Resources>
+        <Style x:Key="StackLabel">
+            <Setter Property="ItemsControl.Padding" Value="0,0,0,0"/>
+            <Setter Property="ItemsControl.Margin" Value="3, 3, 8, 3"/>
+        </Style>
+
         <Style TargetType="{x:Type TextBox}" x:Key="validationFailed">
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -43,7 +48,7 @@
                 VerticalAlignment="Top"/>
 
             <StackPanel Grid.Column="1">
-                <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
+                <Label Content="Name:" Style="{StaticResource StackLabel}"/>
 
                 <TextBox Margin="3, 3, 8, 3"
                          Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
@@ -51,7 +56,7 @@
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
 
-                <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
+                <Label Content="Phone Number: " Style="{StaticResource StackLabel}"/>
 
                 <TextBox Margin="3, 3, 8, 3"
                          PreviewTextInput="TextBox_PreviewTextInput"
@@ -62,7 +67,7 @@
 
 
 
-                <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
+                <Label Content="Email:" Style="{StaticResource StackLabel}"/>
 
                 <TextBox Margin="3, 3, 8, 3"
                          Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
