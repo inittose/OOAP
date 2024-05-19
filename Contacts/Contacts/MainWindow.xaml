@@ -12,6 +12,10 @@
         MinHeight="300" 
         MinWidth="500">
     <Window.Resources>
+        <Style x:Key="ButtonStyle">
+            <Setter Property="ItemsControl.Height" Value="25"/>
+        </Style>
+        
         <DataTemplate x:Key="contactTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -78,21 +82,21 @@
 
                     <Button Content="Add"
                         Command="{Binding AddCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="8, 3, 3, 8"
                         IsEnabled="{Binding IsSelectingStatus}"/>
 
                     <Button Content="Edit"
                         Grid.Column="1"
                         Command="{Binding EditCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="3, 3, 3, 8"
                         IsEnabled="{Binding IsReadonlyContactSelected}"/>
 
                     <Button Content="Remove"
                         Grid.Column="2"
                         Command="{Binding RemoveCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="3, 3, 8, 8"
                         IsEnabled="{Binding IsReadonlyContactSelected}"/>
                 </Grid>
@@ -109,7 +113,7 @@
         <StackPanel Grid.Column="2" Margin="3">
             <controls:ContactControl Grid.Column="2"/>
             <Button Content="Apply"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Width="75"
                         Command="{Binding ApplyCommand}"
                         HorizontalAlignment="Left"
