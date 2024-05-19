@@ -102,7 +102,7 @@ namespace View.Model
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Созадет экземпляр класса <see cref="Contact"/>.
+        /// Создает экземпляр класса <see cref="Contact"/>.
         /// </summary>
         public Contact()
         {
@@ -112,7 +112,7 @@ namespace View.Model
         }
 
         /// <summary>
-        /// Созадет экземпляр класса <see cref="Contact"/>.
+        /// Создает экземпляр класса <see cref="Contact"/>.
         /// </summary>
         /// <param name="name">Имя контакта.</param>
         /// <param name="phoneNumber">Номер телефона.</param>
