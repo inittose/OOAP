@@ -187,17 +187,18 @@ namespace View.ViewModel
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// Возвращает сообщение ошибки по заданному свойству.
+        /// Выполняет валидацию выбранного свойства <see cref="MainVM"/>.
         /// </summary>
         /// <param name="propertyName">Имя свойства.</param>
-        /// <returns>Вернет <see cref="string.Empty"/>, если валидация прошла успешно.</returns>
+        /// <returns>Возвращает <see cref="string.Empty"/>, если валидация прошла успешно,
+        /// иначе вернет строку ошибки.</returns>
         public string this[string propertyName]
         {
             get
             {
                 string error = String.Empty;
 
-                if (!IsEditingStatus)
+                if (IsSelectingStatus)
                 {
                     Errors[propertyName] = error;
                     OnPropertyChanged(nameof(IsContactCorrect));
@@ -207,6 +208,7 @@ namespace View.ViewModel
                 switch (propertyName)
                 {
                     case nameof(Name):
+                    {
                         try
                         {
                             ValueValidator.AssertStringOnLength(
@@ -214,13 +216,15 @@ namespace View.ViewModel
                                 Contact.NameLengthLimit,
                                 nameof(Name));
                         }
-                        catch (ArgumentException ex)
+                        catch (ArgumentException exception)
                         {
-                            error = ex.Message;
+                            error = exception.Message;
                         }
 
                         break;
+                    }
                     case nameof(PhoneNumber):
+                    {
                         try
                         {
                             ValueValidator.AssertStringOnLength(
@@ -233,13 +237,15 @@ namespace View.ViewModel
                                 PhoneNumber,
                                 nameof(PhoneNumber));
                         }
-                        catch (ArgumentException ex)
+                        catch (ArgumentException exception)
                         {
-                            error = ex.Message;
+                            error = exception.Message;
                         }
 
                         break;
+                    }
                     case nameof(Email):
+                    {
                         try
                         {
                             ValueValidator.AssertStringOnLength(
@@ -252,12 +258,13 @@ namespace View.ViewModel
                                 Contact.EmailMask,
                                 nameof(Email));
                         }
-                        catch (ArgumentException ex)
+                        catch (ArgumentException exception)
                         {
-                            error = ex.Message;
+                            error = exception.Message;
                         }
 
                         break;
+                    }
                 }
 
                 Errors[propertyName] = error;
