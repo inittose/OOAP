@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections;
 using View.Model;
 using View.Model.Services;
 
@@ -13,7 +13,7 @@ namespace View.ViewModel
     /// <summary>
     /// Управляет логикой работы программы.
     /// </summary>
-    public class MainVM : INotifyPropertyChanged, IDataErrorInfo
+    public class MainVM : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         /// <summary>
         /// Статус редактирования/создания контакта.
@@ -29,6 +29,11 @@ namespace View.ViewModel
         /// Контакт, который поддается редактированию.
         /// </summary>
         private Contact _editedContact;
+
+        /// <summary>
+        /// Возвращает словарь ошибок, где ключ - свойство, а значение - текст ошибки.
+        /// </summary>
+        private Dictionary<string, string> Errors { get; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Возвращает и задает список контактов.
@@ -81,6 +86,7 @@ namespace View.ViewModel
             {
                 EditedContact.Name = value;
                 OnPropertyChanged();
+                Validate(nameof(Name));
             }
         }
 
@@ -94,6 +100,7 @@ namespace View.ViewModel
             {
                 EditedContact.PhoneNumber = value;
                 OnPropertyChanged();
+                Validate(nameof(PhoneNumber));
             }
         }
 
@@ -107,6 +114,7 @@ namespace View.ViewModel
             {
                 EditedContact.Email = value;
                 OnPropertyChanged();
+                Validate(nameof(Email));
             }
         }
 
@@ -146,11 +154,6 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Возвращает словарь ошибок, где ключ - свойство, а значение - текст ошибки.
-        /// </summary>
-        public Dictionary<string, string> Errors { get; } = new Dictionary<string, string>();
-
-        /// <summary>
         /// Возвращает <see cref="true"/>, если контакт выбран и контакт не редактируется.
         /// </summary>
         public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
@@ -160,6 +163,11 @@ namespace View.ViewModel
         /// </summary>
         public Visibility IsApplyButtonVisible => 
             IsEditingStatus ? Visibility.Visible : Visibility.Hidden;
+
+        /// <summary>
+        /// Возвращает значение, указывающее, имеет ли сущность ошибки проверки.
+        /// </summary>
+        public bool HasErrors => Errors.Any();
 
         /// <summary>
         /// Возвращает <see cref="true"/>, если контакт не редактируется.
@@ -187,27 +195,68 @@ namespace View.ViewModel
         public ICommand ApplyCommand { get; }
 
         /// <summary>
+        /// Событие, которое происходит при изменении свойства.
+        /// </summary>
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        /// <summary>
+        /// Происходит при изменении ошибок проверки для свойства или для всей сущности.
+        /// </summary>
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        /// <summary>
+        /// Создает экзепляр класса <see cref="MainVM"/>.
+        /// </summary>
+        public MainVM()
+        {
+            _isEditingStatus = false;
+            Contacts = ContactSerializer.Contacts;
+            AddCommand = new RelayCommand(AddContact);
+            EditCommand = new RelayCommand(EditContact);
+            RemoveCommand = new RelayCommand(RemoveContact);
+            ApplyCommand = new RelayCommand(ApplyContact);
+        }
+
+        /// <summary>
+        /// Возвращает ошибки проверки для указанного свойства или для всей сущности.
+        /// </summary>
+        /// <param name="propertyName">Имя свойства.</param>
+        /// <returns></returns>
+        public IEnumerable GetErrors(string propertyName)
+        {
+            return Errors.ContainsKey(propertyName) ? Errors[propertyName] : null;
+        }
+
+        /// <summary>
+        /// Оповещает об изменении свойства.
+        /// </summary>
+        /// <param name="propertyName">Имя свойства.</param>
+        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        /// <summary>
         /// Выполняет валидацию выбранного свойства <see cref="MainVM"/>.
         /// </summary>
         /// <param name="propertyName">Имя свойства.</param>
-        /// <returns>Возвращает <see cref="string.Empty"/>, если валидация прошла успешно,
-        /// иначе вернет строку ошибки.</returns>
-        public string this[string propertyName]
+        private void Validate(string propertyName)
         {
-            get
+            string error = String.Empty;
+
+            if (IsSelectingStatus)
             {
-                string error = String.Empty;
+                AddError(propertyName, error);
+                OnPropertyChanged(nameof(IsContactCorrect));
+                return;
+            }
 
-                if (IsSelectingStatus)
-                {
-                    Errors[propertyName] = error;
-                    OnPropertyChanged(nameof(IsContactCorrect));
-                    return error;
-                }
-
-                switch (propertyName)
-                {
-                    case nameof(Name):
+            switch (propertyName)
+            {
+                case nameof(Name):
                     {
                         try
                         {
@@ -223,7 +272,7 @@ namespace View.ViewModel
 
                         break;
                     }
-                    case nameof(PhoneNumber):
+                case nameof(PhoneNumber):
                     {
                         try
                         {
@@ -244,7 +293,7 @@ namespace View.ViewModel
 
                         break;
                     }
-                    case nameof(Email):
+                case nameof(Email):
                     {
                         try
                         {
@@ -265,51 +314,26 @@ namespace View.ViewModel
 
                         break;
                     }
-                }
-
-                Errors[propertyName] = error;
-                OnPropertyChanged(nameof(IsContactCorrect));
-
-                return error;
             }
+
+            AddError(propertyName, error);
+            OnPropertyChanged(nameof(IsContactCorrect));
         }
 
         /// <summary>
-        /// Возвращает сообщение ошибки.
+        /// Добавляет ошибку при валидации свойства в <see cref="Errors"/>.
         /// </summary>
-        public string Error => string.Empty;
-
-        /// <summary>
-        /// Событие, которое происходит при изменении свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        /// <summary>
-        /// Создает экзепляр класса <see cref="MainVM"/>.
-        /// </summary>
-        public MainVM()
+        /// <param name="propertyName">Имя свойства.</param>
+        /// <param name="error">Текст ошибки.</param>
+        private void AddError(string propertyName, string error)
         {
-            _isEditingStatus = false;
-            Contacts = ContactSerializer.Contacts;
-            AddCommand = new RelayCommand(AddContact);
-            EditCommand = new RelayCommand(EditContact);
-            RemoveCommand = new RelayCommand(RemoveContact);
-            ApplyCommand = new RelayCommand(ApplyContact);
-            Errors.Add(nameof(Name), string.Empty);
-            Errors.Add(nameof(PhoneNumber), string.Empty);
-            Errors.Add(nameof(Email), string.Empty);
-        }
-
-        /// <summary>
-        /// Оповещает об изменении свойства.
-        /// </summary>
-        /// <param name="property">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string property = "")
-        {
-            if (PropertyChanged != null)
+            if (!Errors.ContainsKey(propertyName))
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+                Errors[propertyName] = string.Empty;
             }
+
+            Errors[propertyName] = error;
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -320,6 +344,7 @@ namespace View.ViewModel
             CurrentContact = null;
             IsEditingStatus = true;
             EditedContact = new Contact();
+            Validate(nameof(Email));
         }
 
         /// <summary>

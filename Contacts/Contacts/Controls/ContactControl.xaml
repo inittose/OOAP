@@ -51,7 +51,7 @@
                 <Label Content="Name:" Style="{StaticResource StackLabel}"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
@@ -61,7 +61,7 @@
                 <TextBox Margin="3, 3, 8, 3"
                          PreviewTextInput="TextBox_PreviewTextInput"
                          DataObject.Pasting="TextBox_Pasting"
-                         Text="{Binding PhoneNumber, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding PhoneNumber, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
@@ -70,7 +70,7 @@
                 <Label Content="Email:" Style="{StaticResource StackLabel}"/>
 
                 <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Email, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding Email, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
