@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Collections;
-using View.Model;
-using View.Model.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Model;
+using Model.Services;
 
-namespace View.ViewModel
+namespace ViewModel
 {
     /// <summary>
     /// Управляет логикой работы программы.
@@ -163,7 +163,7 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает <see cref="Visibility.Visible"/>, если контакт редактируется.
         /// </summary>
-        public Visibility IsApplyButtonVisible => 
+        public Visibility IsApplyButtonVisible =>
             IsEditingStatus ? Visibility.Visible : Visibility.Hidden;
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace View.ViewModel
         /// <param name="propertyName">Имя свойства.</param>
         private void Validate(string propertyName)
         {
-            string error = String.Empty;
+            string error = string.Empty;
 
             if (IsSelectingStatus)
             {

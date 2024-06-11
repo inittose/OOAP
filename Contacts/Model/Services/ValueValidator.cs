@@ -1,4 +1,4 @@
-﻿namespace View.Model.Services
+﻿namespace Model.Services
 {
     /// <summary>
     /// Проводит валидацию входных данных.
