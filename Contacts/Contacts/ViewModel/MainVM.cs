@@ -7,13 +7,14 @@ using System.Windows.Input;
 using System.Collections;
 using View.Model;
 using View.Model.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace View.ViewModel
 {
     /// <summary>
     /// Управляет логикой работы программы.
     /// </summary>
-    public class MainVM : INotifyPropertyChanged, INotifyDataErrorInfo
+    public class MainVM : ObservableObject, INotifyDataErrorInfo
     {
         /// <summary>
         /// Статус редактирования/создания контакта.
@@ -195,11 +196,6 @@ namespace View.ViewModel
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// Событие, которое происходит при изменении свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        /// <summary>
         /// Происходит при изменении ошибок проверки для свойства или для всей сущности.
         /// </summary>
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -225,18 +221,6 @@ namespace View.ViewModel
         public IEnumerable GetErrors(string propertyName)
         {
             return Errors.ContainsKey(propertyName) ? Errors[propertyName] : null;
-        }
-
-        /// <summary>
-        /// Оповещает об изменении свойства.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         /// <summary>

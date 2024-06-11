@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace View.Model
@@ -6,7 +7,7 @@ namespace View.Model
     /// <summary>
     /// Хранит информацию о контакте
     /// </summary>
-    public class Contact : INotifyPropertyChanged, ICloneable
+    public class Contact : ObservableObject, ICloneable
     {
         /// <summary>
         /// Максимальное количество символов свойства <see cref="Name"/>.
@@ -54,14 +55,7 @@ namespace View.Model
         public string Name
         {
             get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _name, value);
         }
 
         /// <summary>
@@ -70,14 +64,7 @@ namespace View.Model
         public string PhoneNumber
         {
             get => _phoneNumber;
-            set
-            {
-                if (_phoneNumber != value)
-                {
-                    _phoneNumber = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _phoneNumber, value);
         }
 
         /// <summary>
@@ -86,20 +73,8 @@ namespace View.Model
         public string Email
         {
             get => _email;
-            set
-            {
-                if (_email != value)
-                {
-                    _email = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _email, value);
         }
-
-        /// <summary>
-        /// Событие, которое происходит при изменении свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Создает экземпляр класса <see cref="Contact"/>.
@@ -122,18 +97,6 @@ namespace View.Model
             Name = name;
             PhoneNumber = phoneNumber;
             Email = email;
-        }
-
-        /// <summary>
-        /// Оповещает об изменении свойства.
-        /// </summary>
-        /// <param name="property">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string property = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
         }
 
         /// <summary>
