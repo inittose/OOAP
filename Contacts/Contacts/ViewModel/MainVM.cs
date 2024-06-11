@@ -49,6 +49,8 @@ namespace View.ViewModel
             set
             {
                 _editedContact = value;
+                Validate(nameof(Name));
+                Validate(nameof(Email));
 
                 foreach (var property in typeof(Contact).GetProperties())
                 {
@@ -70,8 +72,6 @@ namespace View.ViewModel
                     _currentContact = value;
                     EditedContact = CurrentContact;
                     IsEditingStatus = false;
-                    Validate(nameof(Name));
-                    Validate(nameof(Email));
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
                 }
