@@ -15,6 +15,8 @@
         </Style>
 
         <Style TargetType="{x:Type TextBox}" x:Key="validationFailed">
+            <Setter Property="ItemsControl.Margin" Value="3, 3, 8, 3"/>
+            
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
                     <ControlTemplate>
@@ -50,16 +52,14 @@
             <StackPanel Grid.Column="1">
                 <Label Content="Name:" Style="{StaticResource StackLabel}"/>
 
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
 
                 <Label Content="Phone Number: " Style="{StaticResource StackLabel}"/>
 
-                <TextBox Margin="3, 3, 8, 3"
-                         PreviewTextInput="TextBox_PreviewTextInput"
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput"
                          DataObject.Pasting="TextBox_Pasting"
                          Text="{Binding PhoneNumber, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
@@ -69,8 +69,7 @@
 
                 <Label Content="Email:" Style="{StaticResource StackLabel}"/>
 
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Email, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox Text="{Binding Email, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource validationFailed}"
                          IsReadOnly="{Binding IsSelectingStatus}"/>
 
