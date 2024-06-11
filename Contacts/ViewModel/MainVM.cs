@@ -16,6 +16,11 @@ namespace ViewModel
     public class MainVM : ObservableObject, INotifyDataErrorInfo
     {
         /// <summary>
+        /// Текст поисковой строки.
+        /// </summary>
+        private string _searchLine = string.Empty;
+
+        /// <summary>
         /// Статус редактирования/создания контакта.
         /// </summary>
         private bool _isEditingStatus;
@@ -39,6 +44,28 @@ namespace ViewModel
         /// Возвращает и задает список контактов.
         /// </summary>
         public ObservableCollection<Contact> Contacts { get; set; }
+
+        /// <summary>
+        /// Возвращает и задает список отображенных контактов.
+        /// </summary>
+        public ObservableCollection<Contact> ShowedContacts
+        {
+            get
+            {
+                var contacts = new ObservableCollection<Contact>();
+
+                foreach (var contact in Contacts)
+                {
+                    if (contact.Name.Contains(SearchLine) || 
+                        contact.PhoneNumber.Contains(SearchLine))
+                    {
+                        contacts.Add(contact);
+                    }
+                }
+
+                return contacts;
+            }
+        }
 
         /// <summary>
         /// Возвращает и задает контакт, который поддается редактированию.
@@ -117,6 +144,19 @@ namespace ViewModel
                 EditedContact.Email = value;
                 OnPropertyChanged();
                 Validate(nameof(Email));
+            }
+        }
+
+        /// <summary>
+        /// Возвращает и задает текст поисковой строки.
+        /// </summary>
+        public string SearchLine
+        {
+            get => _searchLine;
+            set
+            {
+                _searchLine = value;
+                OnPropertyChanged(nameof(ShowedContacts));
             }
         }
 
@@ -358,6 +398,7 @@ namespace ViewModel
             }
 
             ContactSerializer.Contacts = Contacts;
+            OnPropertyChanged(nameof(ShowedContacts));
         }
 
         /// <summary>
@@ -379,6 +420,7 @@ namespace ViewModel
 
             IsEditingStatus = false;
             ContactSerializer.Contacts = Contacts;
+            OnPropertyChanged(nameof(ShowedContacts));
         }
     }
 }

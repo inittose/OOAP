@@ -63,13 +63,15 @@
                        Margin="8,8,3,3"
                        Padding="0,0,0,0"/>
 
-                    <TextBox Grid.Column="1" Margin="3,8,8,3"/>
+                    <TextBox Grid.Column="1" 
+                             Margin="3,8,8,3"
+                             Text="{Binding SearchLine, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
                 <ListBox Grid.Column="0" 
                      Grid.Row="1" 
                      SelectedItem="{Binding CurrentContact}"
-                     ItemsSource="{Binding Contacts}"
+                     ItemsSource="{Binding ShowedContacts}"
                      Margin="8,3,8,3"
                      ItemTemplate="{StaticResource contactTemplate}"/>
 
