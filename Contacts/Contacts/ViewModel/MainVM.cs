@@ -71,6 +71,8 @@ namespace View.ViewModel
                     _currentContact = value;
                     EditedContact = CurrentContact;
                     IsEditingStatus = false;
+                    Validate(nameof(Name));
+                    Validate(nameof(Email));
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
                 }
@@ -328,7 +330,6 @@ namespace View.ViewModel
             CurrentContact = null;
             IsEditingStatus = true;
             EditedContact = new Contact();
-            Validate(nameof(Email));
         }
 
         /// <summary>
