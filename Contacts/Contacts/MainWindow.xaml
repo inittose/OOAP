@@ -4,85 +4,105 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:View.ViewModel"
+        xmlns:controls="clr-namespace:View.Controls"
         mc:Ignorable="d"
         Title="Contacts" 
         Height="322" 
         Width="532" 
         MinHeight="300" 
         MinWidth="500">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*" MinWidth="200"/>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" MinWidth="250"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0" Background="#f8f8f8">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle">
+            <Setter Property="ItemsControl.Height" Value="25"/>
+        </Style>
+        
+        <DataTemplate x:Key="contactTemplate">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Find: "
+                <Image Width="30"
+                       Height="30"
+                       Margin="3,3,3,3"
+                       Source="/photo_placeholder_100x100.png"/>
+
+                <StackPanel Margin="3" Grid.Column="1">
+                    <TextBlock Text="{Binding Name}"
+                               FontSize="12"
+                               FontWeight="SemiBold"/>
+
+                    <TextBlock Text="{Binding PhoneNumber}" FontSize="10"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+        </Window.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*" MinWidth="200"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="250"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Background="#f8f8f8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Find: "
                        Grid.Column="0"
                        Margin="8,8,3,3"
                        Padding="0,0,0,0"/>
 
-                <TextBox Grid.Column="1" Margin="3,8,8,3"/>
-            </Grid>
+                    <TextBox Grid.Column="1" Margin="3,8,8,3"/>
+                </Grid>
 
-            <ListBox Grid.Column="0" 
+                <ListBox Grid.Column="0" 
                      Grid.Row="1" 
                      SelectedItem="{Binding CurrentContact}"
                      ItemsSource="{Binding Contacts}"
-                     Margin="8,3,8,3">
-                
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Path=Name}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                     Margin="8,3,8,3"
+                     ItemTemplate="{StaticResource contactTemplate}"/>
 
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Add"
+                    <Button Content="Add"
                         Command="{Binding AddCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="8, 3, 3, 8"
                         IsEnabled="{Binding IsSelectingStatus}"/>
 
-                <Button Content="Edit"
+                    <Button Content="Edit"
                         Grid.Column="1"
                         Command="{Binding EditCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="3, 3, 3, 8"
                         IsEnabled="{Binding IsReadonlyContactSelected}"/>
 
-                <Button Content="Remove"
+                    <Button Content="Remove"
                         Grid.Column="2"
                         Command="{Binding RemoveCommand}"
-                        Height="25"
+                        Style="{StaticResource ButtonStyle}"
                         Margin="3, 3, 8, 8"
                         IsEnabled="{Binding IsReadonlyContactSelected}"/>
+                </Grid>
             </Grid>
-        </Grid>
 
-        <GridSplitter Grid.Column="1"
+            <GridSplitter Grid.Column="1"
                       Grid.Row="0"
                       ShowsPreview="False"
                       Width="3"
@@ -90,46 +110,16 @@
                       VerticalAlignment="Stretch"
                       Background="White"/>
 
-        <Grid Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Image Grid.Column="0"
-                   Source="/photo_placeholder_100x100.png"
-                   Width="75"
-                   Height="75"
-                   Margin="3, 30, 3, 8"
-                   VerticalAlignment="Top"/>
-
-            <StackPanel Grid.Column="1">
-                <Label Content="Name:" Padding="0,0,0,0" Margin="3,8,8,3"/>
-                
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=Name}"
-                         IsReadOnly="{Binding IsSelectingStatus}"/>
-                
-                <Label Content="Phone Number: " Padding="0,0,0,0" Margin="3,3,8,3"/>
-
-                <TextBox Margin="3, 3, 8, 3"
-                         Text="{Binding Path=PhoneNumber}"
-                         IsReadOnly="{Binding IsSelectingStatus}"/>
-                
-                <Label Content="Email:" Padding="0,0,0,0" Margin="3,3,8,3"/>
-                
-                <TextBox Margin="3, 3, 8, 0"
-                         Text="{Binding Path=Email}"
-                         IsReadOnly="{Binding IsSelectingStatus}"/>
-                
-                <Button Content="Apply"
-                        Height="25"
+        <StackPanel Grid.Column="2" Margin="3">
+            <controls:ContactControl Grid.Column="2"/>
+            <Button Content="Apply"
+                        Style="{StaticResource ButtonStyle}"
                         Width="75"
                         Command="{Binding ApplyCommand}"
-                        Visibility="{Binding IsApplyButtonVisible}"
                         HorizontalAlignment="Left"
-                        Margin="3, 50, 0, 0"/>
-            </StackPanel>
-        </Grid>
+                        Margin="84, 50, 0, 0"
+                        Visibility="{Binding IsApplyButtonVisible}"
+                        IsEnabled="{Binding IsContactCorrect}"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="View.Controls.ContactControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:View.Controls"
+             xmlns:viewModel="clr-namespace:View.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="StackLabel">
+            <Setter Property="ItemsControl.Padding" Value="0,0,0,0"/>
+            <Setter Property="ItemsControl.Margin" Value="3, 3, 8, 3"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}" x:Key="validationFailed">
+            <Setter Property="ItemsControl.Margin" Value="3, 3, 8, 3"/>
+            
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Border BorderThickness="1">
+                            <AdornedElementPlaceholder/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="Background" Value="#FFDDDD"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                Source="/photo_placeholder_100x100.png"
+                Width="75"
+                Height="75"
+                Margin="3, 30, 3, 8"
+                VerticalAlignment="Top"/>
+
+            <StackPanel Grid.Column="1">
+                <Label Content="Name:" Style="{StaticResource StackLabel}"/>
+
+                <TextBox Text="{Binding Name, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource validationFailed}"
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
+
+
+                <Label Content="Phone Number: " Style="{StaticResource StackLabel}"/>
+
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput"
+                         DataObject.Pasting="TextBox_Pasting"
+                         Text="{Binding PhoneNumber, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource validationFailed}"
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
+
+
+
+                <Label Content="Email:" Style="{StaticResource StackLabel}"/>
+
+                <TextBox Text="{Binding Email, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource validationFailed}"
+                         IsReadOnly="{Binding IsSelectingStatus}"/>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

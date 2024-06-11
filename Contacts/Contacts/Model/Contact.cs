@@ -4,10 +4,35 @@ using System.Runtime.CompilerServices;
 namespace View.Model
 {
     /// <summary>
-    /// Хранит информацию о контакте
+    /// Хранит информацию о контакте.
     /// </summary>
     public class Contact : INotifyPropertyChanged, ICloneable
     {
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="Name"/>.
+        /// </summary>
+        public const int NameLengthLimit = 100;
+
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
+        /// </summary>
+        public const int PhoneNumberLengthLimit = 100;
+
+        /// <summary>
+        /// Максимальное количество символов свойства <see cref="Email"/>.
+        /// </summary>
+        public const int EmailLengthLimit = 100;
+
+        /// <summary>
+        /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
+        /// </summary>
+        public const string PhoneNumberMask = "1234567890+-() ";
+
+        /// <summary>
+        /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
+        /// </summary>
+        public const string EmailMask = "@";
+
         /// <summary>
         /// Имя контакта.
         /// </summary>
@@ -77,7 +102,7 @@ namespace View.Model
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Созадет экземпляр класса <see cref="Contact"/>.
+        /// Создает экземпляр класса <see cref="Contact"/>.
         /// </summary>
         public Contact()
         {
@@ -87,7 +112,7 @@ namespace View.Model
         }
 
         /// <summary>
-        /// Созадет экземпляр класса <see cref="Contact"/>.
+        /// Создает экземпляр класса <see cref="Contact"/>.
         /// </summary>
         /// <param name="name">Имя контакта.</param>
         /// <param name="phoneNumber">Номер телефона.</param>
