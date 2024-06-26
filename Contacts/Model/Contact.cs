@@ -13,14 +13,24 @@ namespace Model
         public const int NameLengthLimit = 100;
 
         /// <summary>
+        /// Минимальное количество символов свойства <see cref="PhoneNumber"/>.
+        /// </summary>
+        public const int PhoneNumberLowerLengthLimit = 2;
+
+        /// <summary>
         /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
         /// </summary>
-        public const int PhoneNumberLengthLimit = 100;
+        public const int PhoneNumberUpperLengthLimit = 50;
+
+        /// <summary>
+        /// Минимальное количество символов свойства <see cref="Email"/>.
+        /// </summary>
+        public const int EmailLowerLengthLimit = 6;
 
         /// <summary>
         /// Максимальное количество символов свойства <see cref="Email"/>.
         /// </summary>
-        public const int EmailLengthLimit = 100;
+        public const int EmailUpperLengthLimit = 100;
 
         /// <summary>
         /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
@@ -30,7 +40,7 @@ namespace Model
         /// <summary>
         /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
         /// </summary>
-        public const string EmailMask = "@";
+        public const string EmailMask = "@.";
 
         /// <summary>
         /// Имя контакта.

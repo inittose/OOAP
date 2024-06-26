@@ -77,6 +77,7 @@ namespace ViewModel
             {
                 _editedContact = value;
                 Validate(nameof(Name));
+                Validate(nameof(PhoneNumber));
                 Validate(nameof(Email));
 
                 foreach (var property in typeof(Contact).GetProperties())
@@ -301,9 +302,10 @@ namespace ViewModel
                     {
                         try
                         {
-                            ValueValidator.AssertStringOnLength(
+                            ValueValidator.AssertStringOnDigitLengthLimits(
                                 PhoneNumber,
-                                Contact.PhoneNumberLengthLimit,
+                                Contact.PhoneNumberLowerLengthLimit,
+                                Contact.PhoneNumberUpperLengthLimit,
                                 nameof(PhoneNumber));
 
                             ValueValidator.AssertStringOnMask(
@@ -322,9 +324,10 @@ namespace ViewModel
                     {
                         try
                         {
-                            ValueValidator.AssertStringOnLength(
+                            ValueValidator.AssertStringOnLimits(
                                 Email,
-                                Contact.EmailLengthLimit,
+                                Contact.EmailLowerLengthLimit,
+                                Contact.EmailUpperLengthLimit,
                                 nameof(Email));
 
                             ValueValidator.AssertStringOnMask(
