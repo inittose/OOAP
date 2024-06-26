@@ -20,7 +20,7 @@ namespace Model
         /// <summary>
         /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
         /// </summary>
-        public const int PhoneNumberUpperLengthLimit = 50;
+        public const int PhoneNumberUpperLengthLimit = 15;
 
         /// <summary>
         /// Минимальное количество символов свойства <see cref="Email"/>.
