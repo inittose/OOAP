@@ -2,7 +2,7 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace View.Model.Services
+namespace Model.Services
 {
     /// <summary>
     /// Сериализует и десериализует данные контактов.
@@ -50,7 +50,7 @@ namespace View.Model.Services
         /// <summary>
         /// Десериализует данные о контактах.
         /// </summary>
-        /// <returns>Экземпляр класса <see cref="Model.Contact"/>.</returns>
+        /// <returns>Экземпляр класса <see cref="Contact"/>.</returns>
         private static ObservableCollection<Contact> Deserialize()
         {
             if (ContactJson == string.Empty)
@@ -80,7 +80,7 @@ namespace View.Model.Services
         /// <summary>
         /// Сериализует данные о контактах.
         /// </summary>
-        /// <param name="contact">Экземпляр класса <see cref="Model.Contact"/>.</param>
+        /// <param name="contact">Экземпляр класса <see cref="Contact"/>.</param>
         private static void Serialize(ObservableCollection<Contact> contact)
         {
             ContactJson = JsonConvert.SerializeObject(

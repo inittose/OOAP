@@ -1,20 +1,25 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Collections;
-using View.Model;
-using View.Model.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Model;
+using Model.Services;
 
-namespace View.ViewModel
+namespace ViewModel
 {
     /// <summary>
     /// Управляет логикой работы программы.
     /// </summary>
-    public class MainVM : INotifyPropertyChanged, INotifyDataErrorInfo
+    public class MainVM : ObservableObject, INotifyDataErrorInfo
     {
+        /// <summary>
+        /// Текст поисковой строки.
+        /// </summary>
+        private string _searchLine = string.Empty;
+
         /// <summary>
         /// Статус редактирования/создания контакта.
         /// </summary>
@@ -41,6 +46,28 @@ namespace View.ViewModel
         public ObservableCollection<Contact> Contacts { get; set; }
 
         /// <summary>
+        /// Возвращает и задает список отображенных контактов.
+        /// </summary>
+        public ObservableCollection<Contact> ShowedContacts
+        {
+            get
+            {
+                var contacts = new ObservableCollection<Contact>();
+
+                foreach (var contact in Contacts)
+                {
+                    if (contact.Name.Contains(SearchLine) || 
+                        contact.PhoneNumber.Contains(SearchLine))
+                    {
+                        contacts.Add(contact);
+                    }
+                }
+
+                return contacts;
+            }
+        }
+
+        /// <summary>
         /// Возвращает и задает контакт, который поддается редактированию.
         /// </summary>
         public Contact EditedContact
@@ -50,6 +77,7 @@ namespace View.ViewModel
             {
                 _editedContact = value;
                 Validate(nameof(Name));
+                Validate(nameof(PhoneNumber));
                 Validate(nameof(Email));
 
                 foreach (var property in typeof(Contact).GetProperties())
@@ -121,6 +149,19 @@ namespace View.ViewModel
         }
 
         /// <summary>
+        /// Возвращает и задает текст поисковой строки.
+        /// </summary>
+        public string SearchLine
+        {
+            get => _searchLine;
+            set
+            {
+                _searchLine = value;
+                OnPropertyChanged(nameof(ShowedContacts));
+            }
+        }
+
+        /// <summary>
         /// Возвращает и задает статус редактирования/создания контакта.
         /// </summary>
         public bool IsEditingStatus
@@ -163,7 +204,7 @@ namespace View.ViewModel
         /// <summary>
         /// Возвращает <see cref="Visibility.Visible"/>, если контакт редактируется.
         /// </summary>
-        public Visibility IsApplyButtonVisible => 
+        public Visibility IsApplyButtonVisible =>
             IsEditingStatus ? Visibility.Visible : Visibility.Hidden;
 
         /// <summary>
@@ -197,11 +238,6 @@ namespace View.ViewModel
         public ICommand ApplyCommand { get; }
 
         /// <summary>
-        /// Событие, которое происходит при изменении свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        /// <summary>
         /// Происходит при изменении ошибок проверки для свойства или для всей сущности.
         /// </summary>
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -230,24 +266,12 @@ namespace View.ViewModel
         }
 
         /// <summary>
-        /// Оповещает об изменении свойства.
-        /// </summary>
-        /// <param name="propertyName">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        /// <summary>
         /// Выполняет валидацию выбранного свойства <see cref="MainVM"/>.
         /// </summary>
         /// <param name="propertyName">Имя свойства.</param>
         private void Validate(string propertyName)
         {
-            string error = String.Empty;
+            string error = string.Empty;
 
             if (IsSelectingStatus)
             {
@@ -278,9 +302,10 @@ namespace View.ViewModel
                     {
                         try
                         {
-                            ValueValidator.AssertStringOnLength(
+                            ValueValidator.AssertStringOnDigitLengthLimits(
                                 PhoneNumber,
-                                Contact.PhoneNumberLengthLimit,
+                                Contact.PhoneNumberLowerLengthLimit,
+                                Contact.PhoneNumberUpperLengthLimit,
                                 nameof(PhoneNumber));
 
                             ValueValidator.AssertStringOnMask(
@@ -299,9 +324,10 @@ namespace View.ViewModel
                     {
                         try
                         {
-                            ValueValidator.AssertStringOnLength(
+                            ValueValidator.AssertStringOnLimits(
                                 Email,
-                                Contact.EmailLengthLimit,
+                                Contact.EmailLowerLengthLimit,
+                                Contact.EmailUpperLengthLimit,
                                 nameof(Email));
 
                             ValueValidator.AssertStringOnMask(
@@ -375,6 +401,7 @@ namespace View.ViewModel
             }
 
             ContactSerializer.Contacts = Contacts;
+            OnPropertyChanged(nameof(ShowedContacts));
         }
 
         /// <summary>
@@ -396,6 +423,7 @@ namespace View.ViewModel
 
             IsEditingStatus = false;
             ContactSerializer.Contacts = Contacts;
+            OnPropertyChanged(nameof(ShowedContacts));
         }
     }
 }

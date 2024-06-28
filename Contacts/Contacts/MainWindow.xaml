@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:View.ViewModel"
+        xmlns:local="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:controls="clr-namespace:View.Controls"
         mc:Ignorable="d"
         Title="Contacts" 
@@ -63,13 +63,15 @@
                        Margin="8,8,3,3"
                        Padding="0,0,0,0"/>
 
-                    <TextBox Grid.Column="1" Margin="3,8,8,3"/>
+                    <TextBox Grid.Column="1" 
+                             Margin="3,8,8,3"
+                             Text="{Binding SearchLine, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
                 <ListBox Grid.Column="0" 
                      Grid.Row="1" 
                      SelectedItem="{Binding CurrentContact}"
-                     ItemsSource="{Binding Contacts}"
+                     ItemsSource="{Binding ShowedContacts}"
                      Margin="8,3,8,3"
                      ItemTemplate="{StaticResource contactTemplate}"/>
 

@@ -1,12 +1,11 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace View.Model
+namespace Model
 {
     /// <summary>
     /// Хранит информацию о контакте.
     /// </summary>
-    public class Contact : INotifyPropertyChanged, ICloneable
+    public class Contact : ObservableObject, ICloneable
     {
         /// <summary>
         /// Максимальное количество символов свойства <see cref="Name"/>.
@@ -14,14 +13,24 @@ namespace View.Model
         public const int NameLengthLimit = 100;
 
         /// <summary>
+        /// Минимальное количество символов свойства <see cref="PhoneNumber"/>.
+        /// </summary>
+        public const int PhoneNumberLowerLengthLimit = 2;
+
+        /// <summary>
         /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
         /// </summary>
-        public const int PhoneNumberLengthLimit = 100;
+        public const int PhoneNumberUpperLengthLimit = 15;
+
+        /// <summary>
+        /// Минимальное количество символов свойства <see cref="Email"/>.
+        /// </summary>
+        public const int EmailLowerLengthLimit = 6;
 
         /// <summary>
         /// Максимальное количество символов свойства <see cref="Email"/>.
         /// </summary>
-        public const int EmailLengthLimit = 100;
+        public const int EmailUpperLengthLimit = 100;
 
         /// <summary>
         /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
@@ -31,7 +40,7 @@ namespace View.Model
         /// <summary>
         /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
         /// </summary>
-        public const string EmailMask = "@";
+        public const string EmailMask = "@.";
 
         /// <summary>
         /// Имя контакта.
@@ -54,14 +63,7 @@ namespace View.Model
         public string Name
         {
             get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _name, value);
         }
 
         /// <summary>
@@ -70,14 +72,7 @@ namespace View.Model
         public string PhoneNumber
         {
             get => _phoneNumber;
-            set
-            {
-                if (_phoneNumber != value)
-                {
-                    _phoneNumber = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _phoneNumber, value);
         }
 
         /// <summary>
@@ -86,20 +81,8 @@ namespace View.Model
         public string Email
         {
             get => _email;
-            set
-            {
-                if (_email != value)
-                {
-                    _email = value;
-                    OnPropertyChanged();
-                }
-            }
+            set => SetProperty(ref _email, value);
         }
-
-        /// <summary>
-        /// Событие, которое происходит при изменении свойства.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Создает экземпляр класса <see cref="Contact"/>.
@@ -122,18 +105,6 @@ namespace View.Model
             Name = name;
             PhoneNumber = phoneNumber;
             Email = email;
-        }
-
-        /// <summary>
-        /// Оповещает об изменении свойства.
-        /// </summary>
-        /// <param name="property">Имя свойства.</param>
-        public void OnPropertyChanged([CallerMemberName] string property = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
         }
 
         /// <summary>
