@@ -35,11 +35,15 @@ namespace Model
         /// <summary>
         /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
         /// </summary>
+        // TODO: Используй более сложную маску для проверки номера телефона. Плюс используй Regex
+        // https://ihateregex.io/expr/phone
         public const string PhoneNumberMask = "1234567890+-() ";
 
         /// <summary>
         /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
         /// </summary>
+        // TODO: Используй более сложную маску для проверки почты. Плюс используй Regex
+        // https://ihateregex.io/expr/email
         public const string EmailMask = "@.";
 
         /// <summary>

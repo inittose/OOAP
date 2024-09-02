@@ -33,6 +33,11 @@ namespace Model.Services
         /// <summary>
         /// Выгружает данные о контактах, если они есть.
         /// </summary>
+        // TODO: Сделать чтение на уровне десериализации.
+        // Весь код в статическом конструкторе вынести в отдельный приватный метод,
+        // который будет возвращать JSON строку. Свойство ContactJson убрать.
+        // Это нужно для того, чтобы при запуске программы статические элементы не заполнялись сразу
+        // и не потребляли память, а делали это тогда, когда идет первый вызов метода, где они используются.
         static ContactSerializer()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
@@ -96,6 +101,8 @@ namespace Model.Services
         /// <summary>
         /// Сохраняет данные о контактах в файл сериализации.
         /// </summary>
+        // TODO: Когда свойство ContactJson уберется добавить аргумент данному методу.
+        // TODO: Не забыть про XML-комментарий.
         private static void SaveFile()
         {
             File.WriteAllText(FilePath, ContactJson);
