@@ -25,30 +25,24 @@ namespace Model.Services
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Contacts\\Contact.json";
 
-        /// <summary>
-        /// Возвращает и задает информацию о контактах в виде json.
-        /// </summary>
-        private static string ContactJson { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Выгружает данные о контактах, если они есть.
-        /// </summary>
         // TODO: Сделать чтение на уровне десериализации.
         // Весь код в статическом конструкторе вынести в отдельный приватный метод,
         // который будет возвращать JSON строку. Свойство ContactJson убрать.
         // Это нужно для того, чтобы при запуске программы статические элементы не заполнялись сразу
         // и не потребляли память, а делали это тогда, когда идет первый вызов метода, где они используются.
-        static ContactSerializer()
+        // UPD: +
+
+        private static string DeserializeJson()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
 
             try
             {
-                ContactJson = File.ReadAllText(FilePath);
+                return File.ReadAllText(FilePath);
             }
             catch
             {
-                ContactJson = string.Empty;
+                return string.Empty;
             }
         }
 
@@ -58,6 +52,8 @@ namespace Model.Services
         /// <returns>Экземпляр класса <see cref="Contact"/>.</returns>
         private static ObservableCollection<Contact> Deserialize()
         {
+            var ContactJson = DeserializeJson();
+
             if (ContactJson == string.Empty)
             {
                 return new ObservableCollection<Contact>();
@@ -88,22 +84,25 @@ namespace Model.Services
         /// <param name="contact">Экземпляр класса <see cref="Contact"/>.</param>
         private static void Serialize(ObservableCollection<Contact> contact)
         {
-            ContactJson = JsonConvert.SerializeObject(
+            var ContactJson = JsonConvert.SerializeObject(
                 contact,
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All
                 });
 
-            SaveFile();
+            SaveFile(ContactJson);
         }
 
         /// <summary>
         /// Сохраняет данные о контактах в файл сериализации.
         /// </summary>
+        /// <param name="ContactJson">Информация о контактах в формате json.</param>
         // TODO: Когда свойство ContactJson уберется добавить аргумент данному методу.
+        // UPD: +
         // TODO: Не забыть про XML-комментарий.
-        private static void SaveFile()
+        // UPD: +
+        private static void SaveFile(string ContactJson)
         {
             File.WriteAllText(FilePath, ContactJson);
         }
