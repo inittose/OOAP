@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ViewModel;assembly=ViewModel"
         xmlns:controls="clr-namespace:View.Controls"
+        xmlns:converter="clr-namespace:View"
         mc:Ignorable="d"
         Title="Contacts" 
         Height="322" 
@@ -12,6 +13,7 @@
         MinHeight="300" 
         MinWidth="500">
     <Window.Resources>
+        <converter:BoolToVisibility x:Key="BoolToVisibility"/>
         <Style x:Key="ButtonStyle">
             <Setter Property="ItemsControl.Height" Value="25"/>
         </Style>
@@ -120,7 +122,7 @@
                         Command="{Binding ApplyCommand}"
                         HorizontalAlignment="Left"
                         Margin="84, 50, 0, 0"
-                        Visibility="{Binding IsApplyButtonVisible}"
+                        Visibility="{Binding IsEditingStatus, Converter={StaticResource BoolToVisibility}}"
                         IsEnabled="{Binding IsContactCorrect}"/>
         </StackPanel>
     </Grid>

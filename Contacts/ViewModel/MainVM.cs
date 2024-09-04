@@ -211,7 +211,6 @@ namespace ViewModel
                     Validate(nameof(Email));
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
-                    OnPropertyChanged(nameof(IsApplyButtonVisible));
                     OnPropertyChanged(nameof(IsSelectingStatus));
                 }
             }
@@ -241,14 +240,10 @@ namespace ViewModel
         /// </summary>
         public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
 
-        /// <summary>
-        /// Возвращает <see cref="Visibility.Visible"/>, если контакт редактируется.
-        /// </summary>
         // TODO: Убрать связь с типами, которые относятся к отрисовки (Visibility).
         // Сделать его bool свойством. В проекте View сделать конвертер BoolToVisibility
         // или использовать готовый реализованный конвертер в WPF.
-        public Visibility IsApplyButtonVisible =>
-            IsEditingStatus ? Visibility.Visible : Visibility.Hidden;
+        // UPD: +
 
         /// <summary>
         /// Возвращает значение, указывающее, имеет ли сущность ошибки проверки.
