@@ -31,12 +31,14 @@ namespace ViewModel
         private Contact _currentContact;
 
         /// <summary>
-        /// Контакт, который поддается редактированию.
+        /// Индекс редактируемого контакта.
         /// </summary>
+        private int EditingContactIndex { get; set; } = -1;
+
         // TODO: Убрать поле и свойство. Оставить только CurrentContact.
         // При изменении можно делать клон элемента, который будет устанавливаться в CurrentContact.
         // Его и надо будет изменять.
-        private Contact _editedContact;
+        // UPD: +
 
         /// <summary>
         /// Возвращает словарь ошибок, где ключ - свойство, а значение - текст ошибки.
@@ -49,7 +51,7 @@ namespace ViewModel
         public ObservableCollection<Contact> Contacts { get; set; }
 
         /// <summary>
-        /// Возвращает и задает список отображенных контактов.
+        /// Возвращает список отображенных контактов.
         /// </summary>
         public ObservableCollection<Contact> ShowedContacts
         {
@@ -71,26 +73,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Возвращает и задает контакт, который поддается редактированию.
-        /// </summary>
-        public Contact EditedContact
-        {
-            get => _editedContact;
-            set
-            {
-                _editedContact = value;
-                Validate(nameof(Name));
-                Validate(nameof(PhoneNumber));
-                Validate(nameof(Email));
-
-                foreach (var property in typeof(Contact).GetProperties())
-                {
-                    OnPropertyChanged(property.Name);
-                }
-            }
-        }
-
-        /// <summary>
         /// Возвращает и задает текущий контакт.
         /// </summary>
         public Contact CurrentContact
@@ -101,10 +83,19 @@ namespace ViewModel
                 if (_currentContact != value)
                 {
                     _currentContact = value;
-                    EditedContact = CurrentContact;
                     IsEditingStatus = false;
+
+                    Validate(nameof(Name));
+                    Validate(nameof(PhoneNumber));
+                    Validate(nameof(Email));
+
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
+
+                    foreach (var property in typeof(Contact).GetProperties())
+                    {
+                        OnPropertyChanged(property.Name);
+                    }
                 }
             }
         }
@@ -114,14 +105,22 @@ namespace ViewModel
         /// </summary>
         public string Name
         {
-            get => EditedContact?.Name ?? string.Empty;
+            get => CurrentContact?.Name ?? string.Empty;
             set
             {
                 // TODO: Сделать проверку на то, что не присваивается такое же значение. Ниже приведен пример:
                 // if(SetProperty(EditedContact.Name, value, EditedContact, (contact, value) => contact.Name = value))
-                EditedContact.Name = value;
-                OnPropertyChanged();
-                Validate(nameof(Name));
+                // UPD: +
+                if (
+                    SetProperty(
+                        CurrentContact.Name, 
+                        value, 
+                        CurrentContact, 
+                        (contact, value) => contact.Name = value))
+                {
+                    OnPropertyChanged();
+                    Validate(nameof(Name));
+                }
             }
         }
 
@@ -130,13 +129,21 @@ namespace ViewModel
         /// </summary>
         public string PhoneNumber
         {
-            get => EditedContact?.PhoneNumber ?? string.Empty;
+            get => CurrentContact?.PhoneNumber ?? string.Empty;
             set
             {
                 // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                EditedContact.PhoneNumber = value;
-                OnPropertyChanged();
-                Validate(nameof(PhoneNumber));
+                // UPD: +
+                if (
+                    SetProperty(
+                        CurrentContact.PhoneNumber, 
+                        value, 
+                        CurrentContact, 
+                        (contact, value) => contact.PhoneNumber = value))
+                {
+                    OnPropertyChanged();
+                    Validate(nameof(PhoneNumber));
+                }
             }
         }
 
@@ -145,13 +152,21 @@ namespace ViewModel
         /// </summary>
         public string Email
         {
-            get => EditedContact?.Email ?? string.Empty;
+            get => CurrentContact?.Email ?? string.Empty;
             set
             {
                 // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                EditedContact.Email = value;
-                OnPropertyChanged();
-                Validate(nameof(Email));
+                // UPD: +
+                if (
+                    SetProperty(
+                        CurrentContact.Email, 
+                        value, 
+                        CurrentContact, 
+                        (contact, value) => contact.Email = value))
+                {
+                    OnPropertyChanged();
+                    Validate(nameof(Email));
+                }
             }
         }
 
@@ -164,8 +179,16 @@ namespace ViewModel
             set
             {
                 // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                _searchLine = value;
-                OnPropertyChanged(nameof(ShowedContacts));
+                // UPD: +
+                if (
+                    SetProperty(
+                        _searchLine, 
+                        value, 
+                        SearchLine, 
+                        (searchLine, value) => searchLine = value))
+                {
+                    OnPropertyChanged(nameof(ShowedContacts));
+                }
             }
         }
 
@@ -178,11 +201,19 @@ namespace ViewModel
             set
             {
                 // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                _isEditingStatus = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsReadonlyContactSelected));
-                OnPropertyChanged(nameof(IsApplyButtonVisible));
-                OnPropertyChanged(nameof(IsSelectingStatus));
+                // UPD: +
+
+                if (IsEditingStatus != value)
+                {
+                    _isEditingStatus = value;
+                    Validate(nameof(Name));
+                    Validate(nameof(PhoneNumber));
+                    Validate(nameof(Email));
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(IsReadonlyContactSelected));
+                    OnPropertyChanged(nameof(IsApplyButtonVisible));
+                    OnPropertyChanged(nameof(IsSelectingStatus));
+                }
             }
         }
 
@@ -316,12 +347,6 @@ namespace ViewModel
                     {
                         try
                         {
-                            ValueValidator.AssertStringOnDigitLengthLimits(
-                                PhoneNumber,
-                                Contact.PhoneNumberLowerLengthLimit,
-                                Contact.PhoneNumberUpperLengthLimit,
-                                nameof(PhoneNumber));
-
                             ValueValidator.AssertStringOnRegex(
                                 PhoneNumber,
                                 Contact.PhoneNumberRegex,
@@ -379,13 +404,14 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Добавляет нового контакта в список контактов.
+        /// Добавляет новый контакт в список контактов.
         /// </summary>
         private void AddContact()
         {
             CurrentContact = null;
+            CurrentContact = new Contact();
             IsEditingStatus = true;
-            EditedContact = new Contact();
+            EditingContactIndex = -1;
         }
 
         /// <summary>
@@ -393,8 +419,9 @@ namespace ViewModel
         /// </summary>
         private void EditContact()
         {
+            EditingContactIndex = Contacts.IndexOf(CurrentContact);
+            CurrentContact = (Contact)CurrentContact.Clone();
             IsEditingStatus = true;
-            EditedContact = (Contact)CurrentContact.Clone();
         }
 
         /// <summary>
@@ -423,18 +450,18 @@ namespace ViewModel
         /// </summary>
         private void ApplyContact()
         {
-            if (!Contacts.Contains(CurrentContact))
+            if (EditingContactIndex < 0)
             {
-                Contacts.Add(EditedContact);
-                CurrentContact = EditedContact;
+                Contacts.Add(CurrentContact);
             }
             else
             {
-                CurrentContact.Name = Name;
-                CurrentContact.PhoneNumber = PhoneNumber;
-                CurrentContact.Email = Email;
+                Contacts[EditingContactIndex].Name = Name;
+                Contacts[EditingContactIndex].PhoneNumber = PhoneNumber;
+                Contacts[EditingContactIndex].Email = Email;
             }
 
+            EditingContactIndex = -1;
             IsEditingStatus = false;
             ContactSerializer.Contacts = Contacts;
             OnPropertyChanged(nameof(ShowedContacts));
