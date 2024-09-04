@@ -26,7 +26,7 @@
                 <Image Width="30"
                        Height="30"
                        Margin="3,3,3,3"
-                       Source="/photo_placeholder_100x100.png"/>
+                       Source="Images/photo_placeholder_100x100.png"/>
 
                 <StackPanel Margin="3" Grid.Column="1">
                     <TextBlock Text="{Binding Name}"

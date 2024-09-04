@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="photo_placeholder_100x100.png" />
+    <None Remove="Images\photo_placeholder_100x100.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="photo_placeholder_100x100.png" />
+    <Resource Include="Images\photo_placeholder_100x100.png" />
   </ItemGroup>
 
 </Project>
