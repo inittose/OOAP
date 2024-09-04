@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Model.Services
 {
@@ -63,7 +64,8 @@ namespace Model.Services
             int maxLength,
             string propertyName)
         {
-            var exctractedDigits = Regex.Match(value, @"\d+").Value;
+            var matchesDigits = Regex.Matches(value, @"\d+");
+            var exctractedDigits = string.Join("", matchesDigits);
             AssertStringOnLimits(exctractedDigits, minLength, maxLength, propertyName, "digits");
         }
 
@@ -71,17 +73,14 @@ namespace Model.Services
         /// Проверяет, содержит ли строка символы маски-строки.
         /// </summary>
         /// <param name="value">Входное значение.</param>
-        /// <param name="mask">Маска-строка.</param>
+        /// <param name="regex">Регулярное выражение.</param>
         /// <param name="propertyName">Имя свойства класса.</param>
-        public static void AssertStringOnMask(string value, string mask, string propertyName)
+        public static void AssertStringOnRegex(string value, string regex, string propertyName)
         {
-            foreach (var character in mask)
+            if (!Regex.Match(value, regex).Success)
             {
-                if (!value.Contains(character))
-                {
-                    throw new ArgumentException(
-                        $"{propertyName} must contain the {character} symbol.");
-                }
+                throw new ArgumentException(
+                    $"{propertyName} must match the following regex: \"{regex}\".");
             }
         }
     }

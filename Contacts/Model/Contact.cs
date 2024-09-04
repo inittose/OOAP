@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace Model
 {
@@ -33,18 +34,26 @@ namespace Model
         public const int EmailUpperLengthLimit = 100;
 
         /// <summary>
-        /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
+        /// Регулярное выражение, которое должно содержаться в свойстве <see cref="PhoneNumber"/>.
         /// </summary>
         // TODO: Используй более сложную маску для проверки номера телефона. Плюс используй Regex
         // https://ihateregex.io/expr/phone
-        public const string PhoneNumberMask = "1234567890+-() ";
+        // UDP: Добавил регулярное выражение для номера телефона, поправил валидатор
+        public const string PhoneNumberRegex = 
+            @"^\+?\d{1,3}\s?\(?\d{3}\)?\s?\d{3}[-\s\.]?\d{2}[-\s\.]?\d{2}$";
 
         /// <summary>
-        /// Маска-строка, которая должна содержаться в свойстве <see cref="Email"/>.
+        /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
+        /// </summary>
+        public const string PhoneNumberMask = @"[0-9+\-().]+";
+
+        /// <summary>
+        /// Регулярное выражение, которое должно содержаться в свойстве <see cref="Email"/>.
         /// </summary>
         // TODO: Используй более сложную маску для проверки почты. Плюс используй Regex
         // https://ihateregex.io/expr/email
-        public const string EmailMask = "@.";
+        // UDP: Изменил маску на регулярное выражение, поправил валидатор
+        public const string EmailRegex = @"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+";
 
         /// <summary>
         /// Имя контакта.

@@ -322,9 +322,9 @@ namespace ViewModel
                                 Contact.PhoneNumberUpperLengthLimit,
                                 nameof(PhoneNumber));
 
-                            ValueValidator.AssertStringOnMask(
-                                Contact.PhoneNumberMask,
+                            ValueValidator.AssertStringOnRegex(
                                 PhoneNumber,
+                                Contact.PhoneNumberRegex,
                                 nameof(PhoneNumber));
                         }
                         catch (ArgumentException exception)
@@ -344,9 +344,9 @@ namespace ViewModel
                                 Contact.EmailUpperLengthLimit,
                                 nameof(Email));
 
-                            ValueValidator.AssertStringOnMask(
+                            ValueValidator.AssertStringOnRegex(
                                 Email,
-                                Contact.EmailMask,
+                                Contact.EmailRegex,
                                 nameof(Email));
                         }
                         catch (ArgumentException exception)
