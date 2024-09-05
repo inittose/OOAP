@@ -25,18 +25,12 @@ namespace Model.Services
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Contacts\\Contact.json";
 
-        // TODO: XML
-        // TODO: Я говорил о том, что все, что находится в данном методе перенести в сам метод Deserialize(). А этот метод удалить
-        // UPD: +
-
         /// <summary>
         /// Десериализует данные о контактах.
         /// </summary>
         /// <returns>Экземпляр класса <see cref="Contact"/>.</returns>
         private static ObservableCollection<Contact> Deserialize()
         {
-            // TODO: MSDN
-            // UPD: +
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
 
             string contactJson;
@@ -84,7 +78,5 @@ namespace Model.Services
 
             File.WriteAllText(FilePath, contactJson);
         }
-        // TODO: Перенести запись в файл в метод Serialize, а этот метод убрать
-        // UPD: +
     }
 }
