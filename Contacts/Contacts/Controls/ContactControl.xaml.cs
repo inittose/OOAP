@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Model;
+using Model.Services;
 
 namespace View.Controls
 {
@@ -26,7 +26,7 @@ namespace View.Controls
         /// <param name="e">Данные о событии.</param>
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (!Regex.IsMatch(e.Text, Contact.PhoneNumberMask))
+            if (!Regex.IsMatch(e.Text, ContactValidator.PhoneNumberMask))
             {
                 e.Handled = true;
             }
@@ -40,7 +40,7 @@ namespace View.Controls
         private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
             var value = (string)e.DataObject.GetData(typeof(string));
-            var correctText = string.Join("", Regex.Matches(value, Contact.PhoneNumberMask));
+            var correctText = string.Join("", Regex.Matches(value, ContactValidator.PhoneNumberMask));
 
             var correctData = new DataObject();
             correctData.SetData(DataFormats.Text, correctText);

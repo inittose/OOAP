@@ -7,6 +7,7 @@ using System.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Model;
 using Model.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ViewModel
 {
@@ -85,9 +86,9 @@ namespace ViewModel
                     _currentContact = value;
                     IsEditingStatus = false;
 
-                    Validate(nameof(Name));
-                    Validate(nameof(PhoneNumber));
-                    Validate(nameof(Email));
+                    Validate(nameof(Name), Name);
+                    Validate(nameof(PhoneNumber), PhoneNumber);
+                    Validate(nameof(Email), Email);
 
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
@@ -119,7 +120,7 @@ namespace ViewModel
                         (contact, value) => contact.Name = value))
                 {
                     OnPropertyChanged();
-                    Validate(nameof(Name));
+                    Validate(nameof(Name), Name);
                 }
             }
         }
@@ -142,7 +143,7 @@ namespace ViewModel
                         (contact, value) => contact.PhoneNumber = value))
                 {
                     OnPropertyChanged();
-                    Validate(nameof(PhoneNumber));
+                    Validate(nameof(PhoneNumber), PhoneNumber);
                 }
             }
         }
@@ -165,7 +166,7 @@ namespace ViewModel
                         (contact, value) => contact.Email = value))
                 {
                     OnPropertyChanged();
-                    Validate(nameof(Email));
+                    Validate(nameof(Email), Email);
                 }
             }
         }
@@ -206,9 +207,9 @@ namespace ViewModel
                 if (IsEditingStatus != value)
                 {
                     _isEditingStatus = value;
-                    Validate(nameof(Name));
-                    Validate(nameof(PhoneNumber));
-                    Validate(nameof(Email));
+                    Validate(nameof(Name), Name);
+                    Validate(nameof(PhoneNumber), PhoneNumber);
+                    Validate(nameof(Email), Email);
                     OnPropertyChanged();
                     OnPropertyChanged(nameof(IsReadonlyContactSelected));
                     OnPropertyChanged(nameof(IsSelectingStatus));
@@ -308,10 +309,13 @@ namespace ViewModel
         /// </summary>
         /// <param name="propertyName">Имя свойства.</param>
         // TODO: Вынести в отдельный класс ContactValidator.
+        // UPD: +
         // TODO: В него же вынести константы диапазонов, которые находятся в классе Contact.
-        private void Validate(string propertyName)
+        // UPD: +
+
+        private void Validate(string propertyName, string value)
         {
-            string error = string.Empty;
+            var error = string.Empty;
 
             if (IsSelectingStatus)
             {
@@ -320,64 +324,7 @@ namespace ViewModel
                 return;
             }
 
-            switch (propertyName)
-            {
-                case nameof(Name):
-                    {
-                        try
-                        {
-                            ValueValidator.AssertStringOnLength(
-                                Name,
-                                Contact.NameLengthLimit,
-                                nameof(Name));
-                        }
-                        catch (ArgumentException exception)
-                        {
-                            error = exception.Message;
-                        }
-
-                        break;
-                    }
-                case nameof(PhoneNumber):
-                    {
-                        try
-                        {
-                            ValueValidator.AssertStringOnRegex(
-                                PhoneNumber,
-                                Contact.PhoneNumberRegex,
-                                nameof(PhoneNumber));
-                        }
-                        catch (ArgumentException exception)
-                        {
-                            error = exception.Message;
-                        }
-
-                        break;
-                    }
-                case nameof(Email):
-                    {
-                        try
-                        {
-                            ValueValidator.AssertStringOnLimits(
-                                Email,
-                                Contact.EmailLowerLengthLimit,
-                                Contact.EmailUpperLengthLimit,
-                                nameof(Email));
-
-                            ValueValidator.AssertStringOnRegex(
-                                Email,
-                                Contact.EmailRegex,
-                                nameof(Email));
-                        }
-                        catch (ArgumentException exception)
-                        {
-                            error = exception.Message;
-                        }
-
-                        break;
-                    }
-            }
-
+            error = ContactValidator.Validate(propertyName, value);
             AddError(propertyName, error);
             OnPropertyChanged(nameof(IsContactCorrect));
         }

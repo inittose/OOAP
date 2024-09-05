@@ -9,53 +9,6 @@ namespace Model
     public class Contact : ObservableObject, ICloneable
     {
         /// <summary>
-        /// Максимальное количество символов свойства <see cref="Name"/>.
-        /// </summary>
-        public const int NameLengthLimit = 100;
-
-        /// <summary>
-        /// Минимальное количество символов свойства <see cref="PhoneNumber"/>.
-        /// </summary>
-        public const int PhoneNumberLowerLengthLimit = 2;
-
-        /// <summary>
-        /// Максимальное количество символов свойства <see cref="PhoneNumber"/>.
-        /// </summary>
-        public const int PhoneNumberUpperLengthLimit = 15;
-
-        /// <summary>
-        /// Минимальное количество символов свойства <see cref="Email"/>.
-        /// </summary>
-        public const int EmailLowerLengthLimit = 6;
-
-        /// <summary>
-        /// Максимальное количество символов свойства <see cref="Email"/>.
-        /// </summary>
-        public const int EmailUpperLengthLimit = 100;
-
-        /// <summary>
-        /// Регулярное выражение, которое должно содержаться в свойстве <see cref="PhoneNumber"/>.
-        /// </summary>
-        // TODO: Используй более сложную маску для проверки номера телефона. Плюс используй Regex
-        // https://ihateregex.io/expr/phone
-        // UDP: Добавил регулярное выражение для номера телефона, поправил валидатор
-        public const string PhoneNumberRegex = 
-            @"^\+?\d{1,3}\s?\(?\d{3}\)?\s?\d{3}[-\s\.]?\d{2}[-\s\.]?\d{2}$";
-
-        /// <summary>
-        /// Маска-строка, из которой должно составляться свойство <see cref="PhoneNumber"/>.
-        /// </summary>
-        public const string PhoneNumberMask = @"[0-9+\-().]+";
-
-        /// <summary>
-        /// Регулярное выражение, которое должно содержаться в свойстве <see cref="Email"/>.
-        /// </summary>
-        // TODO: Используй более сложную маску для проверки почты. Плюс используй Regex
-        // https://ihateregex.io/expr/email
-        // UDP: Изменил маску на регулярное выражение, поправил валидатор
-        public const string EmailRegex = @"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+";
-
-        /// <summary>
         /// Имя контакта.
         /// </summary>
         private string _name;

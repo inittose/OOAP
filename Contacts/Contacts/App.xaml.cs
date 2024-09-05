@@ -5,7 +5,7 @@ using System.Windows;
 // TODO: удалить один файл photo_placeholder_100x100.png (дублируются в корне проекта и в папке Images)
 // UPD: Удалил, оставил в папке Images
 // TODO: Некорректный namespace
-// Поправил
+// UPD: +
 namespace View
 {
     /// <summary>
