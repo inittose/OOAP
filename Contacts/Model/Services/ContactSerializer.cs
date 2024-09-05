@@ -27,19 +27,7 @@ namespace Model.Services
 
         // TODO: XML
         // TODO: Я говорил о том, что все, что находится в данном методе перенести в сам метод Deserialize(). А этот метод удалить
-        private static string DeserializeJson()
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
-
-            try
-            {
-                return File.ReadAllText(FilePath);
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
+        // UPD: +
 
         /// <summary>
         /// Десериализует данные о контактах.
@@ -48,9 +36,16 @@ namespace Model.Services
         private static ObservableCollection<Contact> Deserialize()
         {
             // TODO: MSDN
-            var ContactJson = DeserializeJson();
+            // UPD: +
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
 
-            if (ContactJson == string.Empty)
+            string contactJson;
+
+            try
+            {
+                contactJson = File.ReadAllText(FilePath);
+            }
+            catch
             {
                 return new ObservableCollection<Contact>();
             }
@@ -60,7 +55,7 @@ namespace Model.Services
             try
             {
                 contacts = JsonConvert.DeserializeObject<ObservableCollection<Contact>>(
-                    ContactJson,
+                    contactJson,
                     new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
@@ -68,7 +63,7 @@ namespace Model.Services
             }
             catch
             {
-                ContactJson = string.Empty;
+
             }
 
             return contacts ?? new ObservableCollection<Contact>();
@@ -80,24 +75,16 @@ namespace Model.Services
         /// <param name="contact">Экземпляр класса <see cref="Contact"/>.</param>
         private static void Serialize(ObservableCollection<Contact> contact)
         {
-            var ContactJson = JsonConvert.SerializeObject(
+            var contactJson = JsonConvert.SerializeObject(
                 contact,
                 new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.All
                 });
 
-            SaveFile(ContactJson);
+            File.WriteAllText(FilePath, contactJson);
         }
-
-        /// <summary>
-        /// Сохраняет данные о контактах в файл сериализации.
-        /// </summary>
-        /// <param name="ContactJson">Информация о контактах в формате json.</param>
         // TODO: Перенести запись в файл в метод Serialize, а этот метод убрать
-        private static void SaveFile(string ContactJson)
-        {
-            File.WriteAllText(FilePath, ContactJson);
-        }
+        // UPD: +
     }
 }
