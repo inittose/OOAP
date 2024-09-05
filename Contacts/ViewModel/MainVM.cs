@@ -36,11 +36,6 @@ namespace ViewModel
         /// </summary>
         private int EditingContactIndex { get; set; } = -1;
 
-        // TODO: Убрать поле и свойство. Оставить только CurrentContact.
-        // При изменении можно делать клон элемента, который будет устанавливаться в CurrentContact.
-        // Его и надо будет изменять.
-        // UPD: +
-
         /// <summary>
         /// Возвращает словарь ошибок, где ключ - свойство, а значение - текст ошибки.
         /// </summary>
@@ -109,9 +104,6 @@ namespace ViewModel
             get => CurrentContact?.Name ?? string.Empty;
             set
             {
-                // TODO: Сделать проверку на то, что не присваивается такое же значение. Ниже приведен пример:
-                // if(SetProperty(EditedContact.Name, value, EditedContact, (contact, value) => contact.Name = value))
-                // UPD: +
                 if (
                     SetProperty(
                         CurrentContact.Name, 
@@ -133,8 +125,6 @@ namespace ViewModel
             get => CurrentContact?.PhoneNumber ?? string.Empty;
             set
             {
-                // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                // UPD: +
                 if (
                     SetProperty(
                         CurrentContact.PhoneNumber, 
@@ -156,8 +146,6 @@ namespace ViewModel
             get => CurrentContact?.Email ?? string.Empty;
             set
             {
-                // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                // UPD: +
                 if (
                     SetProperty(
                         CurrentContact.Email, 
@@ -179,8 +167,6 @@ namespace ViewModel
             get => _searchLine;
             set
             {
-                // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                // UPD: +
                 if (
                     SetProperty(
                         _searchLine, 
@@ -201,9 +187,6 @@ namespace ViewModel
             get => _isEditingStatus;
             set
             {
-                // TODO: Сделать проверку на то, что не присваивается такое же значение.
-                // UPD: +
-
                 if (IsEditingStatus != value)
                 {
                     _isEditingStatus = value;
@@ -240,11 +223,6 @@ namespace ViewModel
         /// Возвращает <see cref="true"/>, если контакт выбран и контакт не редактируется.
         /// </summary>
         public bool IsReadonlyContactSelected => CurrentContact != null && !IsEditingStatus;
-
-        // TODO: Убрать связь с типами, которые относятся к отрисовки (Visibility).
-        // Сделать его bool свойством. В проекте View сделать конвертер BoolToVisibility
-        // или использовать готовый реализованный конвертер в WPF.
-        // UPD: +
 
         /// <summary>
         /// Возвращает значение, указывающее, имеет ли сущность ошибки проверки.
@@ -308,10 +286,6 @@ namespace ViewModel
         /// Выполняет валидацию выбранного свойства <see cref="MainVM"/>.
         /// </summary>
         /// <param name="propertyName">Имя свойства.</param>
-        // TODO: Вынести в отдельный класс ContactValidator.
-        // UPD: +
-        // TODO: В него же вынести константы диапазонов, которые находятся в классе Contact.
-        // UPD: +
 
         private void Validate(string propertyName, string value)
         {

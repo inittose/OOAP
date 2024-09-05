@@ -25,13 +25,8 @@ namespace Model.Services
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
             "\\Contacts\\Contact.json";
 
-        // TODO: Сделать чтение на уровне десериализации.
-        // Весь код в статическом конструкторе вынести в отдельный приватный метод,
-        // который будет возвращать JSON строку. Свойство ContactJson убрать.
-        // Это нужно для того, чтобы при запуске программы статические элементы не заполнялись сразу
-        // и не потребляли память, а делали это тогда, когда идет первый вызов метода, где они используются.
-        // UPD: +
-
+        // TODO: XML
+        // TODO: Я говорил о том, что все, что находится в данном методе перенести в сам метод Deserialize(). А этот метод удалить
         private static string DeserializeJson()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
@@ -52,6 +47,7 @@ namespace Model.Services
         /// <returns>Экземпляр класса <see cref="Contact"/>.</returns>
         private static ObservableCollection<Contact> Deserialize()
         {
+            // TODO: MSDN
             var ContactJson = DeserializeJson();
 
             if (ContactJson == string.Empty)
@@ -98,10 +94,7 @@ namespace Model.Services
         /// Сохраняет данные о контактах в файл сериализации.
         /// </summary>
         /// <param name="ContactJson">Информация о контактах в формате json.</param>
-        // TODO: Когда свойство ContactJson уберется добавить аргумент данному методу.
-        // UPD: +
-        // TODO: Не забыть про XML-комментарий.
-        // UPD: +
+        // TODO: Перенести запись в файл в метод Serialize, а этот метод убрать
         private static void SaveFile(string ContactJson)
         {
             File.WriteAllText(FilePath, ContactJson);

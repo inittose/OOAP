@@ -30,9 +30,6 @@
         /// <summary>
         /// Регулярное выражение, которое должно содержаться в свойстве <see cref="PhoneNumber"/>.
         /// </summary>
-        // TODO: Используй более сложную маску для проверки номера телефона. Плюс используй Regex
-        // https://ihateregex.io/expr/phone
-        // UPD: Добавил регулярное выражение для номера телефона, поправил валидатор
         public const string PhoneNumberRegex =
             @"^\+?\d{1,3}\s?\(?\d{3}\)?\s?\d{3}[-\s\.]?\d{2}[-\s\.]?\d{2}$";
 
@@ -44,9 +41,6 @@
         /// <summary>
         /// Регулярное выражение, которое должно содержаться в свойстве <see cref="Email"/>.
         /// </summary>
-        // TODO: Используй более сложную маску для проверки почты. Плюс используй Regex
-        // https://ihateregex.io/expr/email
-        // UPD: +
         public const string EmailRegex = @"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+";
 
         public static string Validate(string propertyName, string value)
